@@ -57,14 +57,14 @@ function ProfilePage() {
                     onClick={() => setActiveComponent('favorites')} 
                     className={`menu-button ${activeComponent === 'favorites' ? 'active-button' : ''}`}>
                         <img src={favoritesIcon} alt='icon' className='menu-icon'/>
-                        Favorites
+                        Понравившиеся
                         <img src={arrowRightIcon} alt='icon' className='arrow-right'/>
                 </button>
                 <button 
                     onClick={() => setActiveComponent('userItems')} 
                     className={`menu-button ${activeComponent === 'userItems' ? 'active-button' : ''}`}>
                         <img src={myItemsIcon} alt='icon' className='menu-icon'/>
-                        My Items
+                        Мои товары
                         <img src={arrowRightIcon} alt='icon' className='arrow-right'/>
                 </button>
                 <button 
