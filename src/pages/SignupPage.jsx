@@ -49,8 +49,7 @@ function SignupPage() {
                     message: 'Пароли не совпадают'
                 });
             } else {
-                navigate('/profile'); 
-                dispatch(re)           
+                navigate('/profile');          
             }
         }
     };
