@@ -252,48 +252,102 @@
 }
 
 
-
 /* Profile form */
 
-.profile-block-wrapper {
+.profile-page {
     display: flex;
-    width: 100%;
+}
+
+.menu-section {
+    width: 37%;
     height: 100vh;
-    align-items: center;  
-    justify-content: center; 
+    display: flex;
     flex-direction: column;
-    padding-right: 100px;
-    margin-top: -20px;
+    align-items: center;
 }
 
-.profile-block-title {
-    font-size: 36px;
-    font-weight: 400;
-    margin: 0;
+.content-section {
+    width: 63%;
+    height: 100vh;
+    background-color: #f7f6f9;
 }
 
-.profile-block-subtitle {
-    font-size: 20px;
-    font-weight: 300;
-    margin-bottom: 40px;
-}
-
-.log-out-button {
-    width: 320px;
-    height: 40px;
-    font-size: 16px;
+.profile-info-button {
+    margin: 15px;
+    display: flex;
+    align-items: center; 
+    height: 70px;
+    width: 87%;
+    border-radius: 40px;
     border: none;
-    cursor: pointer;
-    margin-top: 40px;
     background: none;
-    transition: color 0.3s ease, scale 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.log-out-button:hover {
-    scale: 1.17;
-    color: #3e40a5;
+.profile-info-button:hover {
+    box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    scale: 1.02;
 }
 
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+.user-login {
+    margin-bottom: 5px;
+}
+
+.menu-button {
+    display: flex;
+    align-items: center;
+    width: 85%;
+    height: 44px;
+    margin-bottom: 10px;
+    text-align: start;
+    background: none;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.menu-button:hover {
+    box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    scale: 1.02;
+}
+
+.menu-icon {
+    margin-right: 5px;
+}
+
+.arrow-right {
+    margin-left: auto;
+}
+
+.log-out {
+    margin-top: 50px;
+}
+
+.active-button {
+    box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    scale: 1.02;
+}
 
 
 

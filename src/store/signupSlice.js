@@ -1,10 +1,8 @@
-// signupSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Async thunk action for checking user existence
 export const checkUserExists = createAsyncThunk('signup/checkUser', async (user) => {
-    // Mock API call to check user - replace with actual API call
     const response = await axios.post('/api/check-user', user);
     return response.data;
 });

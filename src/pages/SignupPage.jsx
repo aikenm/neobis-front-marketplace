@@ -2,7 +2,8 @@ import React, { useState, useEffect} from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { setEmail, setLogin, setPassword, setPasswordRepeat, nextStep, prevStep } from '../store/signupSlice';
+import { setEmail, setLogin, setPassword, nextStep, prevStep } from '../store/signupSlice';
+import { setUser } from '../store/userSlice';
 import logo from '../images/logo.svg';
 import arrow from '../images/arrow.svg';
 import passwordIcon from '../images/password-icon.svg';
@@ -49,9 +50,10 @@ function SignupPage() {
                     message: 'Пароли не совпадают'
                 });
             } else {
+                dispatch(setUser({ email: watchedEmail, login: watchedLogin }));
                 navigate('/profile');          
             }
-        }
+       }
     };
 
     const handleGoBack = () => {
@@ -69,7 +71,6 @@ function SignupPage() {
         dispatch(setEmail(''));
         dispatch(setLogin(''));
         dispatch(setPassword(''));
-        dispatch(setPasswordRepeat(''));
     }, [dispatch]);    
 
     return (
