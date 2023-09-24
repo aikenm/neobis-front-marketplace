@@ -1,0 +1,74 @@
+/* Log out modal */
+
+.modal-overlay {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(5px);
+  }
+
+  .modal-log-out-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    text-align: center;
+    padding: 40px;
+    border-radius: 40px;
+    font-size: 19px;
+    width: 310px;
+    background-color: #fff;
+  }
+
+  .modal-log-out-subtitle {
+    font-size: 18px;
+    font-weight: 500;
+    color: black;
+  }
+
+  .modal-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 280px;
+    height: 44px;
+    border: 1px solid transparent;
+    font-size: 16px;
+    border-radius: 16px;
+    font-weight: 700;
+    background-color: #5458EA;
+    cursor: pointer;
+    color: #fff;
+    transition: all 0.3s ease;
+  }
+
+  .confirm {
+    margin-bottom: 5px;
+  }
+
+  .confirm:hover {
+    scale: 0.95;
+    background-color: #323486;
+  }
+
+  .cancel {
+    background-color: #fff;
+    color: black;
+  }
+
+  .cancel:hover {
+    background-color: #323486;
+    color: #fff;
+    scale: 0.95;
+  }
+
+  

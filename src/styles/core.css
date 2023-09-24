@@ -1,0 +1,125 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.main {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+
+
+@media (max-width: 968px) {
+    .main {
+        display: inline;
+        justify-content: center; 
+        align-items: center;
+    }
+
+    /* Image form */
+    
+    .image-block-wrapper {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+    }
+
+    .logo-image {
+        padding-top: 10px;
+    }
+
+    .image-block-title {
+        font-size: 20px;
+        margin-bottom: 40px;
+    }
+    
+    /* Login form */
+
+    .form-wrapper {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        margin-top: 100px;
+    }
+
+    .signup-link {
+        margin-top: 40px;
+        margin-bottom: 30px;
+    }
+
+    .tooltip {
+        top: 2.7%;
+    }
+
+    /* Signup form */
+
+    .signup-form-wrapper {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 100px;
+    }
+
+    .signup-title {
+        top: 37%;
+    }
+
+    .back-button {
+        top: 39%;
+        left: 3%;
+    }
+
+    .password-visibility-btn {
+        top: 39%;
+        left: 88%;
+    }
+
+
+    /* Profile form */
+
+    .profile-block-wrapper {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        text-align: center;
+    }
+
+    .profile-block-title {
+        margin-top: 160px;
+    }
+    
+    .profile-block-subtitle {
+        margin-bottom: -50px;
+    }
+
+    /* Email resend modal window */
+
+    .close {
+        margin: 0;
+    }
+
+    /* Log-out modal window */
+
+    .confirm {
+        margin: 0;
+    }
+
+    .cancel {
+        margin: 0;
+    }
+}
