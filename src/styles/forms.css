@@ -81,7 +81,7 @@
 
 .form-button:hover {
     background-color: #3e40a5;
-    scale: 0.95;
+    scale: 0.97;
 }
 
 .form-button:disabled {
@@ -353,6 +353,76 @@
     -webkit-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
     -moz-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
     scale: 1.02;
+}
+
+/* Main Page */
+
+.main-page {
+
+}
+
+.header {
+    display: flex;
+    height: 100px;
+    width: 95%;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo-text {
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.main-profile-button {
+    display: flex;
+    align-items: center; 
+    height: 60px;
+    width: fit-content;
+    margin-left: 10px;
+    border-radius: 40px;
+    padding: 5px;
+    border: none;
+    background: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: black;
+}
+
+.main-profile-button:hover {
+    box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    scale: 0.97;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    text-align: end;
+    margin-right: 10px;
+    font-size: 18px;
+    padding-left: 10px;
+}
+
+.add-item-button {
+    width: 215px;
+    margin-top: 0;
+    margin-left: auto;
+}
+
+.items-section {
+    display: flex;
+    margin: 0 auto;
+    width: 95%;
+    height: 100%;
+    background-color: gray;
 }
 
 
