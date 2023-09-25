@@ -1,8 +1,8 @@
 import React from 'react';
-import '../styles/modal_message.css';
-import logoutIcon from '../images/logout.svg'
+import '../../styles/modal_message.css';
+import logoutIcon from '../../images/logout.svg'
 
-function ModalSignOutMessage({ show, onConfirm, onCancel }) {
+function ModalLogOutMessage({ show, onConfirm, onCancel }) {
 
     const handleConfirm = () => {
         if (onConfirm) onConfirm();
@@ -28,4 +28,4 @@ function ModalSignOutMessage({ show, onConfirm, onCancel }) {
     );
 }
 
-export default ModalSignOutMessage;
+export default ModalLogOutMessage;

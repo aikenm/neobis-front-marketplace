@@ -9,7 +9,6 @@ function ProfileInfo() {
             <h2>Profile Info</h2>
             <p>Login: {user.login}</p>
             <p>Email: {user.email}</p>
-            {/* Add other profile-related info here */}
         </div>
     );
 }

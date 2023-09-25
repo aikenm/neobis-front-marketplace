@@ -1,29 +1,28 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { setEmail, setLogin, setPassword, nextStep, prevStep } from '../store/signupSlice';
 import { setUser } from '../store/userSlice';
 import logo from '../images/logo.svg';
-import arrow from '../images/arrow.svg';
-import passwordIcon from '../images/password-icon.svg';
-import eyeOpen from '../images/eye-open.svg';
-import eyeClosed from '../images/eye-closed.svg';
-
+import SignupUser from '../components/signup_components/SignupUser';
+import SignupPassword from '../components/signup_components/SignupPassword';
+import SignupPasswordRepeat from '../components/signup_components/SignupPasswordRepeat';
 
 function SignupPage() {
     const dispatch = useDispatch();
     const [passwordVisible, setPasswordVisible] = useState(true);
-    const { register, handleSubmit, watch, formState: { errors, isSubmitted }, setError, setValue } = useForm();
+    const { register, handleSubmit, watch, setError, setValue, formState: { errors, isSubmitted } } = useForm();
     const { password, step, userExists } = useSelector(state => state.signup);
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&=-])[A-Za-z\d@$!%*?&=-]{8,15}$/;
-    
+
     const watchedEmail = watch("email");
     const watchedLogin = watch("login");
     const watchedPassword = watch("password");
     const watchedPasswordRepeat = watch("password_repeat");
 
     const navigate = useNavigate();
+
 
     const handleNextStep = async (data) => {
         if (step === 1) {
@@ -71,7 +70,7 @@ function SignupPage() {
         dispatch(setEmail(''));
         dispatch(setLogin(''));
         dispatch(setPassword(''));
-    }, [dispatch]);    
+    }, [dispatch]);
 
     return (
         <form className='main' onSubmit={handleSubmit(handleNextStep)}>
@@ -80,104 +79,31 @@ function SignupPage() {
                 <h1 className='image-block-title'>MOBI MARKET</h1>
             </div>
             <div className='signup-form-wrapper form-wrapper'>
-            <h2 className='signup-title'>Регистрация</h2>
-                {step === 1 && (
-                    <>
-                        <Link to="/" className='back-button'>
-                            <img src={arrow} alt="back" className='arrow-icon'/>
-                            <span className='arrow-text'>Назад</span>
-                        </Link>
-                        <div className="input-wrapper">
-                            <input 
-                                {...register('login', { required: true })}
-                                type="text" 
-                                placeholder=" "
-                                className="input-field"
-                            />
-                            <label className="floating-label">Имя пользователя</label>
-                        </div>
-                        <div className="input-wrapper">
-                            <input 
-                                {...register('email', {
-                                    required: true,
-                                    pattern: {
-                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                        message: "Неправильный email"
-                                    }
-                                })}
-                                type="email" 
-                                placeholder=" "
-                                className="input-field"
-                            />
-                            <label className="floating-label">Почта</label>
-                            {isSubmitted && errors.email && <p>{errors.email.message}</p>}
-                        </div>
-                        <button type="submit" className='form-button' disabled={!watchedLogin || !watchedEmail || errors.email}>Далее</button>
-                    </>
-                )}
-
-                {step === 2 && (
-                    <>
-                        <Link onClick={handleGoBack} className='back-button'>
-                            <img src={arrow} alt="back" className='arrow-icon'/>
-                            <span className='arrow-text'>Назад</span>
-                        </Link>
-                        <img
-                            onClick={togglePasswordVisibility}
-                            src={passwordVisible ? eyeOpen : eyeClosed}
-                            alt="Toggle Password"
-                            className="password-visibility-btn"
-                        />
-                        <img src={passwordIcon} alt="password icon" className='password-icon'/>
-                        <span className='pass-title'>Придумайте пароль</span>
-                        <span className='pass-subtitle'>Минимальная длина — 8 символов. Для надежности пароль должен содержать буквы и цифры.</span>
-                        <input 
-                            {...register('password', {
-                                required: true,
-                            })}
-                            type={passwordVisible ? "text" : "password"}  
-                            placeholder="••••••••"
-                            className="password-field"
-                        />
-                        {errors.password && <p className="password-error">{errors.password.message}</p>}
-                        <button type="submit" className='form-button' disabled={!watchedPassword}>Далее</button>
-                    </>
-                )}
-
-                {step === 3 && (
-                    <>
-                        <Link onClick={handleGoBack} className='back-button'>
-                            <img src={arrow} alt="back" className='arrow-icon'/>
-                            <span className='arrow-text'>Назад</span>
-                        </Link>
-                        <img
-                            onClick={togglePasswordVisibility}
-                            src={passwordVisible ? eyeOpen : eyeClosed}
-                            alt="Toggle Password"
-                            className="password-visibility-btn"
-                        />
-                        <img src={passwordIcon} alt="password icon" className='password-icon'/>
-                        <span className='pass-title'>Повторите пароль</span>
-                        <span className='pass-subtitle'>Минимальная длина — 8 символов. Для надежности пароль должен содержать буквы и цифры.</span>
-                        <input 
-                            type={passwordVisible ? "text" : "password"}  
-                            placeholder={password}
-                            value={password}
-                            className="password-field disabled"
-                            disabled
-                        />
-                        <input 
-                            {...register('password_repeat', {
-                                required: "Повторите пароль"
-                            })}
-                            type={passwordVisible ? "text" : "password"}  
-                            placeholder="••••••••"
-                            className="password-field"
-                        />
-                        {errors.password_repeat && <p className="password-error">{errors.password_repeat.message}</p>}
-                        <button type="submit" className='form-button' disabled={!watchedPasswordRepeat}>Далее</button>
-                    </>
-                )}
+                <h2 className='signup-title'>Регистрация</h2>
+                {step === 1 && <SignupUser 
+                    register={register}
+                    errors={errors}
+                    isSubmitted={isSubmitted}
+                    watchedLogin={watchedLogin}
+                    watchedEmail={watchedEmail}
+                />}
+                {step === 2 && <SignupPassword 
+                    register={register}
+                    errors={errors}
+                    togglePasswordVisibility={togglePasswordVisibility}
+                    passwordVisible={passwordVisible}
+                    watchedPassword={watchedPassword}
+                    handleGoBack={handleGoBack}
+                />}
+                {step === 3 && <SignupPasswordRepeat 
+                    register={register}
+                    errors={errors}
+                    togglePasswordVisibility={togglePasswordVisibility}
+                    passwordVisible={passwordVisible}
+                    password={password}
+                    watchedPasswordRepeat={watchedPasswordRepeat}
+                    handleGoBack={handleGoBack}
+                />}
                 {userExists && <p>User already exists!</p>}
             </div>
         </form>

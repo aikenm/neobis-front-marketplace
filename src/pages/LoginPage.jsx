@@ -98,7 +98,7 @@ function LoginPage() {
 
 
     return (
-        <div className='main'>
+        <div className='main' onSubmit={onSubmit}>
             <div className='image-block-wrapper'>
                 <img src={logo} alt="" className='logo-image' />
                 <h1 className='image-block-title'>MOBI MARKET</h1>

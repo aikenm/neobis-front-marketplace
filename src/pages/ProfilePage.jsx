@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetSteps } from '../store/signupSlice';
+import ProfileInfo from '../components/profile_components/ProfileInfo';
+import Favorites from '../components/profile_components/Favorites';
+import UserItems from '../components/profile_components/UserItems';
+import ModalLogOutMessage from '../components/profile_components/ModalLogOutMessage';
 import '../styles/image_block.css';
 import '../styles/forms.css';
 import '../styles/core.css';
-import ModalSignOutMessage from '../components/ModalSignOutMessage';
-import { resetSteps } from '../store/signupSlice';
-import { useDispatch } from 'react-redux';
-import ProfileInfo from '../components/ProfileInfo';
-import Favorites from '../components/Favorites';
-import UserItems from '../components/UserItems';
 import favoritesIcon from '../images/favorites.svg';
 import myItemsIcon from '../images/my-items.svg';
 import logoutSmallIcon from '../images/logout-small.svg';
@@ -43,7 +42,7 @@ function ProfilePage() {
     };
 
     return (
-        <div className='profile-page'>
+        <div className='main'>
             <div className="menu-section">
                 <button onClick={() => setActiveComponent('profile')} 
                 className={`profile-info-button ${activeComponent === 'profile' ? 'active-button' : ''}`}>
@@ -80,7 +79,7 @@ function ProfilePage() {
                 { renderRightComponent() }
             </div>
 
-            <ModalSignOutMessage 
+            <ModalLogOutMessage 
                 show={showLogoutModal}
                 onConfirm={handleLogoutConfirm}
                 onCancel={() => setShowLogoutModal(false)}
