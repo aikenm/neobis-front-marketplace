@@ -4,18 +4,19 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import arrow from '../../images/arrow.svg';
 import defaultAvatar from '../../images/avatar.svg';
-import { updateUser } from '../../store/userSlice';
+import { asyncUpdateUser } from '../../store/userSlice';
 
 function ProfileInfo() {
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     const [selectedImage, setSelectedImage] = useState(null); 
-    const { register, handleSubmit } = useForm({
+    const { register, getValues } = useForm({
         defaultValues: {
             name: user.name || '',
             surname: user.surname || '',
             login: user.login || '',
+            dob: user.dob || '',
             number: user.number || '',
             email: user.email || ''
         }
@@ -33,10 +34,10 @@ function ProfileInfo() {
         }
     };
 
-    const onSubmit = (data) => {
-        const userData = { ...data };
-        delete userData.file; 
-        dispatch(updateUser(userData));
+    const handleBlur = (fieldName) => {
+        const value = getValues(fieldName);
+        const updatedData = { [fieldName]: value }; 
+        dispatch(asyncUpdateUser(updatedData));
     };
 
     return (
@@ -55,17 +56,17 @@ function ProfileInfo() {
                     <label htmlFor="file" className='file-label'>Выбрать фотографию</label>
                 </div>
                 
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form>
                     <div className='personal-info-block1'>
-                        <input type="text" {...register('name')} placeholder="Name" className='personal-info-input'/>
-                        <input type="text" {...register('surname')} placeholder="Surname" className='personal-info-input'/>
-                        <input type="text" {...register('login')} placeholder="Login" className='personal-info-input'/>
+                        <input type="text" {...register('name')} onBlur={() => handleBlur('name')} placeholder="Имя" className='personal-info-input'/>
+                        <input type="text" {...register('surname')} onBlur={() => handleBlur('surname')} placeholder="Фамилия" className='personal-info-input'/>
+                        <input type="text" {...register('login')} onBlur={() => handleBlur('login')} placeholder="Имя пользователя" className='personal-info-input'/>
+                        <input type="date" {...register('dob')} onBlur={() => handleBlur('dob')} placeholder="Дата рождения" className='personal-info-input dob-input'/> 
                     </div>
                     <div className='personal-info-block2'>
-                        <input type="text" {...register('number')} placeholder="Number" className='personal-info-input'/>
-                        <input type="email" {...register('email')} placeholder="Email" className='personal-info-input'/>
+                        <input type="text" {...register('number')} onBlur={() => handleBlur('number')} placeholder="0(000)000 000" className='personal-info-input'/>
+                        <input type="email" {...register('email')} onBlur={() => handleBlur('email')} placeholder="Почта" className='personal-info-input'/>
                     </div>
-                    <button type="submit" className='form-button save-button'>Save</button>
                 </form>
             </div>
         </div>

@@ -55,11 +55,12 @@ content {
     scale: 1.12;
 }
 
-
 .content-section {
     display: flex;
     flex-direction: column;
+    align-items: center;
     margin: 0 auto;
+    max-width: 100%;
 }
 
 .personal-info-avatar-block {
@@ -77,11 +78,10 @@ content {
     margin-top: 20px;
 }
 
-
 .personal-info-block1 {
     display: flex;
     width: 660px;
-    height: 115px;
+    height: 165px;
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -96,29 +96,21 @@ content {
     justify-content: center;
     flex-direction: column;
     width: 660px;
-    height: 80px;
+    height: 85px;
     border-radius: 16px;
     background-color: #fff;
 }
 
 .personal-info-input {
-    width: 645px;
-    height: 32px;
+    width: 640px;
+    height: 35px;
     border: none;
     outline: none;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .personal-info-input:not(:last-child) {
     border-bottom: 1px solid #f7f6f9 ;
-}
-
-
-
-.save-button {
-    width: 220px;
-    height: 35px;
-    font-size: 16px;
-    margin: 0 auto;
-    margin-top: 100px;
 }
 
