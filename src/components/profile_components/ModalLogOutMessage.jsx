@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../styles/modal_message.css';
 import logoutIcon from '../../images/logout.svg'
 
 function ModalLogOutMessage({ show, onConfirm, onCancel }) {

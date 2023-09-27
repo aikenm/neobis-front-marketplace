@@ -6,9 +6,6 @@ import logo from '../images/logo.svg';
 import eyeOpen from '../images/eye-open.svg';
 import eyeClosed from '../images/eye-closed.svg';
 import warning from '../images/warning.svg';
-import '../styles/image_block.css';
-import '../styles/forms.css';
-import '../styles/core.css';
 
 function LoginPage() {
     const { register, handleSubmit } = useForm();

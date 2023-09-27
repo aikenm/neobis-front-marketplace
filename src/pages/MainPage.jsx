@@ -1,9 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import '../styles/image_block.css';
-import '../styles/forms.css';
-import '../styles/core.css';
 import avatar from '../images/avatar.svg';
 import miniLogo from '../images/mini-logo.svg';
 

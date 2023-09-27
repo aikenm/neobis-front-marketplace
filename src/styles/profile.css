@@ -1,0 +1,124 @@
+/* User Info */
+
+content {
+    display: flex;
+    background-color: #f7f6f9;
+
+}
+
+.content-header {
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    justify-content: center;
+}
+
+.content-title {
+    display: flex;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.profile-back-button {
+    display: flex;
+    position: absolute;
+    left: 46%;
+    text-decoration: none;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    transition: scale 0.27s ease, color 0.27s ease;
+}
+
+.arrow-icon {
+    width: 44px;
+    height: 28px;
+    border-radius: 50px;
+    background-color: #C0C0C033;
+    transition: background-color 0.27s ease;
+}
+
+.arrow-text {
+    color: black;
+    transition: color 0.27s ease;
+}
+
+.profile-back-button:hover {
+    .arrow-icon {
+        background-color: #d3d0db;
+    }
+    .arrow-text {
+        color: #323384;
+    }
+    scale: 1.12;
+}
+
+
+.content-section {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.personal-info-avatar-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 100px 0px 50px 0px;
+}
+
+.hidden-input-label {
+    display: none;
+}
+
+.file-label {
+    margin-top: 20px;
+}
+
+
+.personal-info-block1 {
+    display: flex;
+    width: 660px;
+    height: 115px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    background-color: #fff;
+}
+
+.personal-info-block2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 660px;
+    height: 80px;
+    border-radius: 16px;
+    background-color: #fff;
+}
+
+.personal-info-input {
+    width: 645px;
+    height: 32px;
+    border: none;
+    outline: none;
+}
+
+.personal-info-input:not(:last-child) {
+    border-bottom: 1px solid #f7f6f9 ;
+}
+
+
+
+.save-button {
+    width: 220px;
+    height: 35px;
+    font-size: 16px;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+

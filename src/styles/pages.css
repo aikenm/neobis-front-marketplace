@@ -1,4 +1,5 @@
-/* Login form */
+/* Login Page */
+
 .form-wrapper {
     display: flex;
     width: 100%;
@@ -141,7 +142,7 @@
 }
 
 
-/* Signup form */
+/* Signup Page */
 
 .signup-form-wrapper {
     margin-top: -190px;
@@ -252,7 +253,7 @@
 }
 
 
-/* Profile form */
+/* Profile Page */
 
 .profile-page {
     display: flex;
@@ -357,10 +358,6 @@
 
 /* Main Page */
 
-.main-page {
-
-}
-
 .header {
     display: flex;
     height: 100px;
@@ -420,6 +417,7 @@
 .items-section {
     display: flex;
     margin: 0 auto;
+    margin-top: 10px;
     width: 95%;
     height: 100%;
     background-color: gray;
