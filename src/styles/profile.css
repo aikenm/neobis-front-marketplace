@@ -61,7 +61,6 @@ content {
     flex-direction: column;
     align-items: center;
     margin: 0 auto;
-    max-width: 100%;
 }
 
 .personal-info-avatar-block {
@@ -103,12 +102,43 @@ content {
 }
 
 .personal-info-input {
-    width: 640px;
+    width: 637px;
     height: 35px;
     border: none;
     outline: none;
-    font-size: 14px;
+    font-size: 15px;
     font-family: 'Montserrat', sans-serif;
+}
+
+.number-field-wrapper {
+    display: flex;
+    align-items: center;
+    width: 640px;
+    border-bottom: 1px solid #f7f6f9 ;
+}
+
+.add-number-button {
+    background: none;
+    border: none;
+    width: 170px;
+    font-size: 15px;
+    color: #5458EA;
+    margin-left: -10px;
+    cursor: pointer;
+    transition: color 0.4s ease, scale 0.4s ease;
+}
+
+.add-number-button:hover {
+    color: #353898;
+    scale: 0.94;
+}
+
+.number-field {
+    text-align: right;
+}
+  
+.number-field:disabled {
+    background-color: #fff;
 }
 
 .personal-info-input:not(:last-child) {

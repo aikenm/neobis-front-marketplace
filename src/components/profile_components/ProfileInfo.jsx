@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import arrow from '../../images/arrow.svg';
 import defaultAvatar from '../../images/avatar.svg';
 import { asyncUpdateUser, updateAvatar } from '../../store/userSlice';
+import AddNumberModal from '../phone-number_components/AddNumberModal';
+import ConfirmCodeModal from '../phone-number_components/ConfirmCodeModal';
 
 function ProfileInfo() {
     const user = useSelector(state => state.user);
@@ -12,6 +14,12 @@ function ProfileInfo() {
 
     const [selectedImage, setSelectedImage] = useState(null); 
     const avatar = useSelector(state => state.user.avatar);
+
+    const [showNumberModal, setShowNumberModal] = useState(false);
+    const [showCodeModal, setShowCodeModal] = useState(false);
+
+    const [enteredNumber, setEnteredNumber] = useState('');
+
 
     const { register, getValues } = useForm({
         defaultValues: {
@@ -37,7 +45,19 @@ function ProfileInfo() {
         }
     };
     
-    
+    const handleAddNumber = () => {
+        setShowNumberModal(true);  
+    };
+
+    const handleNext = (data) => {
+        setShowNumberModal(false);
+        setShowCodeModal(true);
+        setEnteredNumber(data.modalNumber);
+    };
+
+    const handleConfirm = () => {
+        setShowCodeModal(false);
+    };
 
     const handleBlur = (fieldName) => {
         const value = getValues(fieldName);
@@ -69,10 +89,23 @@ function ProfileInfo() {
                         <input type="date" {...register('dob')} onBlur={() => handleBlur('dob')} placeholder="Дата рождения" className='personal-info-input dob-input'/> 
                     </div>
                     <div className='personal-info-block2'>
-                        <input type="text" {...register('number')} onBlur={() => handleBlur('number')} placeholder="0(000)000 000" className='personal-info-input'/>
+                        <div className="number-field-wrapper">
+                            <button type="button" onClick={handleAddNumber} className='add-number-button'>Добавить номер</button>
+                            <input 
+                                type="text" 
+                                {...register('number')} 
+                                value={user.number || ""} 
+                                onBlur={() => handleBlur('number')} 
+                                placeholder="0(000)000 000" 
+                                className='personal-info-input number-field' 
+                                disabled
+                            />
+                        </div>
                         <input type="email" {...register('email')} onBlur={() => handleBlur('email')} placeholder="Почта" className='personal-info-input'/>
                     </div>
                 </form>
+                {showNumberModal && <AddNumberModal onClose={() => setShowNumberModal(false)} onNext={handleNext} />}
+                {showCodeModal && <ConfirmCodeModal onClose={() => setShowCodeModal(false)} onConfirm={handleConfirm} enteredNumber={enteredNumber} />}
             </div>
         </div>
     );

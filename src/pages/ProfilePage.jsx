@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetSteps } from '../store/signupSlice';
+import { logoutUser } from '../store/userSlice';  
 import ProfileInfo from '../components/profile_components/ProfileInfo';
 import Favorites from '../components/profile_components/Favorites';
 import UserItems from '../components/profile_components/UserItems';
@@ -24,6 +25,7 @@ function ProfilePage() {
 
     const handleLogoutConfirm = () => {
         dispatch(resetSteps());
+        dispatch(logoutUser());
         navigate('/');
     };
 
