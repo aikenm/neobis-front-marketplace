@@ -52,7 +52,7 @@ function ProfileInfo() {
     const handleNext = (data) => {
         setShowNumberModal(false);
         setShowCodeModal(true);
-        setEnteredNumber(data.modalNumber);
+        setEnteredNumber(data.number);
     };
 
     const handleConfirm = () => {
@@ -94,8 +94,8 @@ function ProfileInfo() {
                             <input 
                                 type="text" 
                                 {...register('number')} 
-                                value={user.number || ""} 
                                 onBlur={() => handleBlur('number')} 
+                                value={user.number || ""}
                                 placeholder="0(000)000 000" 
                                 className='personal-info-input number-field' 
                                 disabled

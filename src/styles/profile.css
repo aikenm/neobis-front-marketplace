@@ -76,6 +76,14 @@ content {
 
 .file-label {
     margin-top: 20px;
+    color: #5458EA;
+    font-weight: 500;
+    transition: color 0.3s ease, scale 0.3s ease;
+}
+
+.file-label:hover {
+    color: #353898;
+    scale: 0.94;
 }
 
 .personal-info-block1 {
@@ -125,7 +133,7 @@ content {
     color: #5458EA;
     margin-left: -10px;
     cursor: pointer;
-    transition: color 0.4s ease, scale 0.4s ease;
+    transition: color 0.3s ease, scale 0.3s ease;
 }
 
 .add-number-button:hover {

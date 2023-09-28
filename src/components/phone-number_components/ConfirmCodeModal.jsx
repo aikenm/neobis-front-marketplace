@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { updateUser } from '../../store/userSlice'; // Import the updateUser action
+import { updateUser } from '../../store/userSlice';
+import confirmIcon from '../../images/confirm-number.svg' 
 
 function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
   const [timer, setTimer] = useState(60);
@@ -37,22 +38,55 @@ function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
     }
   };
   
+  const checkCode = (e) => {
+    const value = e.target.value;
+    if (value.length === 4) {
+      const enteredCode = Number(value); // Convert to number
+      if (enteredCode === generatedCode) {
+        dispatch(updateUser({ number: enteredNumber }));
+        onConfirm();
+      } else {
+        console.log("Incorrect code");
+      }
+    }
+  };
 
   const handleResend = () => {
     setTimer(60);
     setCanResend(false);
   };
 
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainderSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainderSeconds.toString().padStart(2, '0')}`;
+  }
+
   return (
     <div className="modal-overlay">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="number" {...register('confirmationCode')} placeholder="0000" />
-        <button type="submit">Confirm</button>
-      </form>
-      <button disabled={!canResend} onClick={handleResend}>
-        {canResend ? 'Resend Code' : `Repeat request after ${timer}s`}
-      </button>
-      <button onClick={onClose}>Close</button>
+        <div className='modal-number-content-wrapper'>
+            <h4 className='modal-number-title'>Изменить номер телефона</h4>
+            <div className='modal-number-content'>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                <img src={confirmIcon} alt='confirmIcon' />
+                <h5 className='modal-number-subtitle'>Введите код из СМС</h5>
+                    <input type="text" 
+                    {...register('confirmationCode')} 
+                    placeholder="0000" 
+                    className='code-modal-input'
+                    maxLength="4" 
+                    onChange={checkCode}
+                    />
+                </form>
+                <button disabled={!canResend} onClick={handleResend} className='confirm-resend-button'>
+                    <div className="button-content">
+                        {canResend ? 'Отправить код еще раз' : 'Повторный запрос'}
+                        {!canResend && <div className="timer">{formatTime(timer)}</div>}
+                    </div>
+                </button>
+                <button onClick={onClose} className='confirm-close-button'>✖</button>
+            </div>
+        </div>
     </div>
   );
 }

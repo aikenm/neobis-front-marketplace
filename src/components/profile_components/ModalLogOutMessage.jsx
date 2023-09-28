@@ -16,7 +16,7 @@ function ModalLogOutMessage({ show, onConfirm, onCancel }) {
     return (
         <div className='modal-overlay'>
             <div className='modal-log-out-content'>
-                <img src={logoutIcon} alt=''/>
+                <img src={logoutIcon} alt='log out icon'/>
                 <h5 className='modal-log-out-subtitle'>Вы действительно хотите выйти с приложения?</h5>
                 <div className='modal-log-out-buttons'>
                     <button className='modal-button confirm' onClick={handleConfirm}>Выйти</button>
