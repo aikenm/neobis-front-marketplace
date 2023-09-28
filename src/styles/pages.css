@@ -283,6 +283,7 @@
     border: none;
     background: none;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .profile-info-button:hover {
@@ -329,6 +330,7 @@
     border: none;
     font-size: 16px;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .menu-button:hover {
@@ -357,6 +359,7 @@
     -moz-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
     background-color: #f7f6f9;
     scale: 1.02;
+    cursor: default;
 }
 
 /* Main Page */
