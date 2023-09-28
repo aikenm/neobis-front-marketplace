@@ -5,7 +5,7 @@
     align-items: center;  
     justify-content: center; 
     flex-direction: column;
-    background: url('../images/bg.svg') no-repeat center center / cover;
+    background: url('../images/bg.png') no-repeat center center / cover;
 }
 
 .logo-image {
