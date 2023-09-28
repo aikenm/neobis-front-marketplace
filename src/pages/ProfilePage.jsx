@@ -10,7 +10,7 @@ import favoritesIcon from '../images/favorites.svg';
 import myItemsIcon from '../images/my-items.svg';
 import logoutSmallIcon from '../images/logout-small.svg';
 import arrowRightIcon from '../images/arrow-right.svg';
-import avatar from '../images/avatar.svg';
+import defaultAvatar from '../images/avatar.svg';
 
 function ProfilePage() {
     const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -19,6 +19,8 @@ function ProfilePage() {
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.user);
+    const avatar = useSelector(state => state.user.avatar);
+    
 
     const handleLogoutConfirm = () => {
         dispatch(resetSteps());
@@ -43,7 +45,7 @@ function ProfilePage() {
             <div className="menu-section">
                 <button onClick={() => setActiveComponent('profile')} 
                 className={`profile-info-button ${activeComponent === 'profile' ? 'active-button' : ''}`}>
-                    <img src={avatar} alt='avatar' className='avatar'/>
+                    <img src={avatar || defaultAvatar} alt='avatar' className='avatar'/>
                     <div className='user-info'>
                         <span className='user-login'>{user.login}</span>
                         <span className='user-email'>{user.email}</span>

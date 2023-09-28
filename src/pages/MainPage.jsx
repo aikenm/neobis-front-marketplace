@@ -1,12 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import avatar from '../images/avatar.svg';
+import defaultAvatar from '../images/avatar.svg';
 import miniLogo from '../images/mini-logo.svg';
 
 
 function MainPage() {
     const user = useSelector(state => state.user);
+    const avatar = useSelector(state => state.user.avatar);
     
     return (
         <div className='main-page'>
@@ -24,7 +25,7 @@ function MainPage() {
                         <span className='user-login'>{user.login}</span>
                         <span className='user-email'>{user.email}</span>
                     </div>
-                    <img src={avatar} alt='avatar' className='avatar'/>
+                    <img src={avatar || defaultAvatar} alt='avatar' className='avatar'/>
                 </Link>
             </div>
             <div className='items-section'>

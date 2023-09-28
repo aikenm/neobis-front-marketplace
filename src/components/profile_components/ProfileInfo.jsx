@@ -4,13 +4,15 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import arrow from '../../images/arrow.svg';
 import defaultAvatar from '../../images/avatar.svg';
-import { asyncUpdateUser } from '../../store/userSlice';
+import { asyncUpdateUser, updateAvatar } from '../../store/userSlice';
 
 function ProfileInfo() {
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     const [selectedImage, setSelectedImage] = useState(null); 
+    const avatar = useSelector(state => state.user.avatar);
+
     const { register, getValues } = useForm({
         defaultValues: {
             name: user.name || '',
@@ -25,14 +27,17 @@ function ProfileInfo() {
     const onImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
             const reader = new FileReader();
-
+    
             reader.onload = (e) => {
                 setSelectedImage(e.target.result); 
+                dispatch(updateAvatar(e.target.result)); 
             };
-
+    
             reader.readAsDataURL(event.target.files[0]);
         }
     };
+    
+    
 
     const handleBlur = (fieldName) => {
         const value = getValues(fieldName);
@@ -51,7 +56,7 @@ function ProfileInfo() {
             </div>
             <div className='content-section'>
                 <div className='personal-info-avatar-block'>
-                    <img src={selectedImage || defaultAvatar} alt='avatar' className='avatar'/> 
+                    <img src={avatar || defaultAvatar} alt='avatar' className='avatar'/> 
                     <input type="file" {...register('file')} id="file" name="file" onChange={onImageChange}  className='hidden-input-label'/>
                     <label htmlFor="file" className='file-label'>Выбрать фотографию</label>
                 </div>

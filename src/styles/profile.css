@@ -3,7 +3,6 @@
 content {
     display: flex;
     background-color: #f7f6f9;
-
 }
 
 .content-header {
@@ -11,12 +10,14 @@ content {
     margin: 0 auto;
     display: flex;
     align-items: center;
-    margin-top: 30px;
     justify-content: center;
+    margin-top: 30px;
 }
 
 .content-title {
     display: flex;
+    width: 180px;
+    justify-content: center;
     font-size: 18px;
     font-weight: 600;
 }

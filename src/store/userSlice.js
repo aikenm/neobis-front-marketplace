@@ -7,7 +7,8 @@ const initialState = {
     login: '',
     dob: '',
     number: '',
-    email: ''
+    email: '',
+    avatar: null
 };
 
 const userSlice = createSlice({
@@ -26,6 +27,9 @@ const userSlice = createSlice({
             state.number = action.payload.number || state.number;
             state.email = action.payload.email || state.email;
         },
+        updateAvatar: (state, action) => {
+            state.avatar = action.payload;
+        },
         logoutUser: (state) => {
             Object.assign(state, initialState);
         }
@@ -33,7 +37,7 @@ const userSlice = createSlice({
 });
 
 
-export const { setUser, logoutUser, updateUser } = userSlice.actions;
+export const { setUser, logoutUser, updateUser, updateAvatar } = userSlice.actions;
 
 // export const asyncUpdateUser = (userData) => {
 //     return async dispatch => {
@@ -51,21 +55,52 @@ export const { setUser, logoutUser, updateUser } = userSlice.actions;
 // };
 
 // Simulating an API call with a 2-second delay
-export const asyncUpdateUser = (userData) => {
-    return dispatch => {
-        setTimeout(() => {
-            const simulatedResponse = {
-                status: 200,
-            };
+export const asyncUpdateUser = (userData, imageFile) => {
+    return async dispatch => {
+        const formData = new FormData();
+        
+        for (let key in userData) {
+            formData.append(key, userData[key]);
+        }
 
-            if (simulatedResponse.status === 200) {
-                dispatch(updateUser(userData));
-            } else {
-                console.error("Failed to update user data: simulated error");
-            }
-        }, 2000); 
+        if (imageFile) {
+            formData.append('avatar', imageFile); 
+        }
+
+        try {
+            // Simulating an API call with a 2-second delay
+            setTimeout(() => {
+                const simulatedResponse = {
+                    status: 200,
+                };
+
+                if (simulatedResponse.status === 200) {
+                    dispatch(updateUser(userData));
+                } else {
+                    console.error("Failed to update user data: simulated error");
+                    // handle error
+                }
+            }, 2000);
+            
+            // Uncomment below lines once you have the endpoint ready
+            // const response = await axios.patch('/your/api/endpoint', formData, {
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data',
+            //     },
+            // });
+            
+            // if (response.status === 200) {
+            //     dispatch(updateUser(userData));
+            // } else {
+            //     // handle error
+            // }
+        } catch (error) {
+            console.error("Failed to update user data:", error);
+            // handle error
+        }
     }
 };
+
 
 
 export default userSlice.reducer;
