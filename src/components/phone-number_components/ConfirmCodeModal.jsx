@@ -10,7 +10,6 @@ function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
 
-  // Generate a temporary 4-digit code
   const generatedCode = 2222;
 
   useEffect(() => {
@@ -27,21 +26,11 @@ function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
 
     return () => clearInterval(interval);
   }, [timer, canResend]);
-
-  const onSubmit = (data) => {
-    const enteredCode = Number(data.confirmationCode); // Convert to number
-    if (enteredCode === generatedCode) {
-      dispatch(updateUser({ number: enteredNumber }));
-      onConfirm();
-    } else {
-      console.log("Incorrect code");
-    }
-  };
   
   const checkCode = (e) => {
     const value = e.target.value;
     if (value.length === 4) {
-      const enteredCode = Number(value); // Convert to number
+      const enteredCode = Number(value); 
       if (enteredCode === generatedCode) {
         dispatch(updateUser({ number: enteredNumber }));
         onConfirm();
@@ -67,7 +56,7 @@ function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
         <div className='modal-number-content-wrapper'>
             <h4 className='modal-number-title'>Изменить номер телефона</h4>
             <div className='modal-number-content'>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form>
                 <img src={confirmIcon} alt='confirmIcon' />
                 <h5 className='modal-number-subtitle'>Введите код из СМС</h5>
                     <input type="text" 
