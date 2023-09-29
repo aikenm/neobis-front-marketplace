@@ -21,9 +21,22 @@ function SignupPage() {
     const watchedPassword = watch("password");
     const watchedPasswordRepeat = watch("password_repeat");
 
+    const [showTooltip, setShowTooltip] = useState(false);
+
     const navigate = useNavigate();
     const userExists = useSelector(state => state.signup.userExists);
 
+    const handleUserExists = (reset = false) => {
+        if (reset) {
+            setShowTooltip(false);
+        } else {
+            setShowTooltip(true);
+            setTimeout(() => {
+                setShowTooltip(false);
+            }, 5000);
+        }
+    };
+    
 
     const handleNextStep = async (data) => {
         if (step === 1) {
@@ -33,6 +46,9 @@ function SignupPage() {
                     dispatch(setEmail(data.email));
                     dispatch(setUsername(data.username));
                     dispatch(nextStep());
+                } else if (userExists) {
+                    handleUserExists();
+                    return;
                 }
             }
         } else if (step === 2) {
@@ -103,6 +119,8 @@ function SignupPage() {
                     isSubmitted={isSubmitted}
                     watchedUsername={watchedUsername}
                     watchedEmail={watchedEmail}
+                    showTooltip={showTooltip} 
+                    handleUserExists={handleUserExists} 
                 />}
                 {step === 2 && <SignupPassword 
                     register={register}
@@ -121,7 +139,6 @@ function SignupPage() {
                     watchedPasswordRepeat={watchedPasswordRepeat}
                     handleGoBack={handleGoBack}
                 />}
-                {step === 1 && userExists && <p>User already exists!</p>}
             </div>
         </form>
     );

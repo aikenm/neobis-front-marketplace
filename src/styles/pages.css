@@ -115,6 +115,7 @@
 
 .warning-icon {
     margin-right: 5px;
+    margin-left: 5px;
 }
 
 .input-error {
@@ -250,6 +251,28 @@
         color: #323384;
     }
     scale: 1.12;
+}
+
+.signup-tooltip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 320px;
+    height: 60px;
+    opacity: 0;
+    position: absolute;
+    top: 8%;
+    color: #fff;
+    background-color: #F34545;
+    border-radius: 16px;
+    font-size: 16px;
+    z-index: 10;
+    pointer-events: none;
+    transition: opacity 1s ease-in-out;
+}
+
+.signup-tooltip.show {
+    opacity: 1;
 }
 
 

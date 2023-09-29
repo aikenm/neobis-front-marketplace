@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import arrow from '../../images/arrow.svg'
+import arrow from '../../images/arrow.svg';
+import warning from '../../images/warning.svg';
 
 function SignupUsername({ 
     register, 
     errors, 
     isSubmitted, 
-    watchedEmail, 
-    watchedUsername 
+    showTooltip,
+    handleUserExists
 }) {
+
+    const handleInputChange = () => {
+        handleUserExists(true);
+    };
 
     return (
         <>
@@ -21,7 +26,8 @@ function SignupUsername({
                     {...register('username', { required: true })}
                     type="text" 
                     placeholder=" "
-                    className="input-field"
+                    className={`input-field ${showTooltip ? 'input-error' : ''}`}
+                    onChange={handleInputChange}
                 />
                 <label className="floating-label">Имя пользователя</label>
             </div>
@@ -36,12 +42,19 @@ function SignupUsername({
                     })}
                     type="email" 
                     placeholder=" "
-                    className="input-field"
+                    className={`input-field ${showTooltip ? 'input-error' : ''}`}
+                    onChange={handleInputChange}
                 />
                 <label className="floating-label">Почта</label>
                 {isSubmitted && errors.email && <p>{errors.email.message}</p>}
             </div>
-            <button type="submit" className='form-button' disabled={!watchedUsername || !watchedEmail || errors.email}>Далее</button>
+            {showTooltip && <div className="signup-tooltip show"><img src={warning} alt='Warning sign' className='warning-icon'/>Данный пользователь уже зарегистрирован</div>}
+            <button 
+                type="submit" 
+                className='form-button' 
+            >
+                Далее
+            </button>
         </>
     );
 }
