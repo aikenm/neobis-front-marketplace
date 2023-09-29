@@ -49,7 +49,7 @@ function ProfilePage() {
                 className={`profile-info-button ${activeComponent === 'profile' ? 'active-button' : ''}`}>
                     <img src={avatar || defaultAvatar} alt='avatar' className='avatar'/>
                     <div className='user-info'>
-                        <span className='user-login'>{user.login}</span>
+                        <span className='user-login'>{user.username}</span>
                         <span className='user-email'>{user.email}</span>
                     </div>
                 </button>

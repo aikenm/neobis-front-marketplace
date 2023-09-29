@@ -25,7 +25,7 @@ function ProfileInfo() {
         defaultValues: {
             name: user.name || '',
             surname: user.surname || '',
-            login: user.login || '',
+            username: user.username || '',
             dob: user.dob || '',
             number: user.number || '',
             email: user.email || ''
@@ -85,7 +85,7 @@ function ProfileInfo() {
                     <div className='personal-info-block1'>
                         <input type="text" {...register('name')} onBlur={() => handleBlur('name')} placeholder="Имя" className='personal-info-input'/>
                         <input type="text" {...register('surname')} onBlur={() => handleBlur('surname')} placeholder="Фамилия" className='personal-info-input'/>
-                        <input type="text" {...register('login')} onBlur={() => handleBlur('login')} placeholder="Имя пользователя" className='personal-info-input'/>
+                        <input type="text" {...register('username')} onBlur={() => handleBlur('username')} placeholder="Имя пользователя" className='personal-info-input'/>
                         <input type="date" {...register('dob')} onBlur={() => handleBlur('dob')} placeholder="Дата рождения" className='personal-info-input dob-input'/> 
                     </div>
                     <div className='personal-info-block2'>

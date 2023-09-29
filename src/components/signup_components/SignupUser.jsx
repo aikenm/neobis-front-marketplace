@@ -7,7 +7,7 @@ function SignupUsername({
     errors, 
     isSubmitted, 
     watchedEmail, 
-    watchedLogin 
+    watchedUsername 
 }) {
 
     return (
@@ -18,7 +18,7 @@ function SignupUsername({
             </Link>
             <div className="input-wrapper">
                 <input 
-                    {...register('login', { required: true })}
+                    {...register('username', { required: true })}
                     type="text" 
                     placeholder=" "
                     className="input-field"
@@ -41,7 +41,7 @@ function SignupUsername({
                 <label className="floating-label">Почта</label>
                 {isSubmitted && errors.email && <p>{errors.email.message}</p>}
             </div>
-            <button type="submit" className='form-button' disabled={!watchedLogin || !watchedEmail || errors.email}>Далее</button>
+            <button type="submit" className='form-button' disabled={!watchedUsername || !watchedEmail || errors.email}>Далее</button>
         </>
     );
 }

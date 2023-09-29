@@ -7,7 +7,7 @@ import confirmIcon from '../../images/confirm-number.svg'
 function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
-  const { register, handleSubmit } = useForm();
+  const { register } = useForm();
   const dispatch = useDispatch();
 
   const generatedCode = 2222;

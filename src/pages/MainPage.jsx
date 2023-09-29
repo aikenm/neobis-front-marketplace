@@ -22,7 +22,7 @@ function MainPage() {
                 </button>
                 <Link to="/profile" className='main-profile-button'>
                     <div className='profile-info'>
-                        <span className='user-login'>{user.login}</span>
+                        <span className='user-login'>{user.username}</span>
                         <span className='user-email'>{user.email}</span>
                     </div>
                     <img src={avatar || defaultAvatar} alt='avatar' className='avatar'/>

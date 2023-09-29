@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setEmail, setLogin, setPassword, nextStep, prevStep } from '../store/signupSlice';
+import { setEmail, setUsername, setPassword, nextStep, prevStep, registerUser, resetUserExists } from '../store/signupSlice';
 import { setUser } from '../store/userSlice';
 import logo from '../images/logo.svg';
 import SignupUser from '../components/signup_components/SignupUser';
@@ -13,25 +13,28 @@ function SignupPage() {
     const dispatch = useDispatch();
     const [passwordVisible, setPasswordVisible] = useState(true);
     const { register, handleSubmit, watch, setError, setValue, formState: { errors, isSubmitted } } = useForm();
-    const { password, step, userExists } = useSelector(state => state.signup);
+    const { password, step } = useSelector(state => state.signup);
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&=-])[A-Za-z\d@$!%*?&=-]{8,15}$/;
 
     const watchedEmail = watch("email");
-    const watchedLogin = watch("login");
+    const watchedUsername = watch("username");
     const watchedPassword = watch("password");
     const watchedPasswordRepeat = watch("password_repeat");
 
     const navigate = useNavigate();
+    const userExists = useSelector(state => state.signup.userExists);
 
 
     const handleNextStep = async (data) => {
         if (step === 1) {
             if (!errors.email && !errors.login) {
-                dispatch(setEmail(data.email));
-                dispatch(setLogin(data.login));
-                dispatch(nextStep());
+                const userExists = await dispatch(registerUser({ username: data.username, email: data.email }));
+                if (!userExists) {
+                    dispatch(setEmail(data.email));
+                    dispatch(setUsername(data.username));
+                    dispatch(nextStep());
+                }
             }
-            // dispatch(checkUserExists({ email: data.email, login: data.login }));
         } else if (step === 2) {
             if (data.password && passwordPattern.test(data.password)) {
                 dispatch(setPassword(data.password));
@@ -49,11 +52,18 @@ function SignupPage() {
                     message: 'Пароли не совпадают'
                 });
             } else {
-                dispatch(setUser({ email: watchedEmail, login: watchedLogin }));
+                dispatch(registerUser({
+                    username: watchedUsername,
+                    email: watchedEmail,
+                    password: watchedPassword,
+                    password_confirm: watchedPasswordRepeat
+                }));
+                dispatch(setUser({ email: watchedEmail, username: watchedUsername }));
                 navigate('/profile');          
             }
-       }
+        }
     };
+    
 
     const handleGoBack = () => {
         if (step === 3) {
@@ -67,9 +77,16 @@ function SignupPage() {
     };
 
     useEffect(() => {
+  if (userExists) {
+    dispatch(resetUserExists());
+  }
+}, [watchedUsername, watchedEmail, dispatch]);
+
+    useEffect(() => {
         dispatch(setEmail(''));
-        dispatch(setLogin(''));
+        dispatch(setUsername(''));
         dispatch(setPassword(''));
+        dispatch(resetUserExists());
     }, [dispatch]);
 
     return (
@@ -84,7 +101,7 @@ function SignupPage() {
                     register={register}
                     errors={errors}
                     isSubmitted={isSubmitted}
-                    watchedLogin={watchedLogin}
+                    watchedUsername={watchedUsername}
                     watchedEmail={watchedEmail}
                 />}
                 {step === 2 && <SignupPassword 
@@ -104,7 +121,7 @@ function SignupPage() {
                     watchedPasswordRepeat={watchedPasswordRepeat}
                     handleGoBack={handleGoBack}
                 />}
-                {userExists && <p>User already exists!</p>}
+                {step === 1 && userExists && <p>User already exists!</p>}
             </div>
         </form>
     );

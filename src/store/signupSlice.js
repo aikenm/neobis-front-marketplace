@@ -1,15 +1,9 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-// Async thunk action for checking user existence
-export const checkUserExists = createAsyncThunk('signup/checkUser', async (user) => {
-    const response = await axios.post('/api/check-user', user);
-    return response.data;
-});
 
 const initialState = {
     email: '',
-    login: '',
+    username: '',
     password: '',
     password_repeat: '',
     step: 1,
@@ -23,14 +17,20 @@ const signupSlice = createSlice({
         setEmail: (state, action) => {
             state.email = action.payload;
         },
-        setLogin: (state, action) => {
-            state.login = action.payload;
+        setUsername: (state, action) => {
+            state.username = action.payload;
         },
         setPassword: (state, action) => {
             state.password = action.payload;
         },
         setPasswordRepeat: (state, action) => {
             state.password_repeat = action.payload;
+        },
+        setUserExists: (state, action) => {
+            state.userExists = action.payload;
+        },
+        resetUserExists: (state) => {
+            state.userExists = false;
         },
         nextStep: (state) => {
             state.step += 1;
@@ -41,24 +41,40 @@ const signupSlice = createSlice({
         resetSteps: (state) => {
             Object.assign(state, initialState);
         }
-    },
-    extraReducers: (builder) => {
-        builder.addCase(checkUserExists.fulfilled, (state, action) => {
-            state.userExists = action.payload.exists;
-            if(!state.userExists) {
-                state.step += 1;
-            }
-        });
     }
 });
 
 export default signupSlice.reducer;
 export const { 
     setEmail, 
-    setLogin, 
+    setUsername, 
     setPassword,
     setPasswordRepeat, 
+    setUserExists,
+    resetUserExists,
     nextStep,
     prevStep,
     resetSteps
 } = signupSlice.actions;
+
+export const registerUser = (userData) => async (dispatch, getState) => {
+    try {
+        const response = await axios.post('http://207.154.198.7:8000/auth/register', userData);
+        if (response.status === 200 || response.status === 201) {
+            dispatch(resetUserExists()); 
+        }
+    } catch (error) {
+        if (error.response && error.response.data) {
+            const { username, email } = error.response.data;
+            if (username && username.includes("user с таким username уже существует.") || 
+                email && email.includes("user с таким email уже существует.")) {
+                dispatch(setUserExists(true)); 
+            } else {
+                dispatch(setUserExists(false)); 
+            }
+        }
+    }
+
+    const state = getState();
+    return state.signup.userExists;
+};

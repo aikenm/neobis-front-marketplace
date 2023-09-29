@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginUser } from '../store/userSlice';
 import logo from '../images/logo.svg';
 import eyeOpen from '../images/eye-open.svg';
 import eyeClosed from '../images/eye-closed.svg';
@@ -10,6 +11,7 @@ import warning from '../images/warning.svg';
 function LoginPage() {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [buttonText, setButtonText] = useState("Войти");
@@ -17,8 +19,10 @@ function LoginPage() {
     const [loginFailed, setLoginFailed] = useState(false);
     const [disableLoginButton, setDisableLoginButton] = useState(false);
 
+    const loginStatus = useSelector((state) => state.user.loginStatus);
+
     const [inputValues, setInputValues] = useState({
-        login: '',
+        username: '',
         password: ''
     });
 
@@ -65,37 +69,20 @@ function LoginPage() {
     };
     
 
-    const isFormInvalid = !inputValues.login || !inputValues.password;
+    const isFormInvalid = !inputValues.username || !inputValues.password;
 
     const onSubmit = async (data) => {
-        try {
-            const response = await axios.post("https://neobis-project.up.railway.app/api/auth/log", {
-                login: data.login,
-                password: data.password
-            }, {
-                headers: {
-                    'accept': '*/*',
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (response.data && response.data.token) {
-                localStorage.setItem('authToken', response.data.token);
-            }
-
+        const result = await dispatch(loginUser(data));
+        if (result === 'LOGIN_SUCCESSFUL') {
             navigate('/profile');
-
-        } catch (error) {
-            console.error("Error during login:", error.message || error);
-            if (error.response && error.response.status) {
-                handleLoginFailure();
-            }
+        } else {
+            handleLoginFailure();
         }
     };
-
+    
 
     return (
-        <div className='main' onSubmit={onSubmit}>
+        <div className='main'>
             <div className='image-block-wrapper'>
                 <img src={logo} alt="" className='logo-image' />
                 <h1 className='image-block-title'>MOBI MARKET</h1>
@@ -104,14 +91,14 @@ function LoginPage() {
                 <form onSubmit={handleSubmit(onSubmit)} className='login-form'>
                     <div className="input-wrapper">
                         <input
-                            {...register('login', { required: true })} 
+                            {...register('username', { required: true })} 
                             type="text" 
                             className={`input-field ${loginFailed ? 'input-error' : ''}`}
                             onChange={(e) => {
-                                handleInputChange(e, 'login');
+                                handleInputChange(e, 'username');
                                 if (loginFailed) setLoginFailed(false);
                             }}
-                            value={inputValues.login}
+                            value={inputValues.username}
                             placeholder=" " 
                         />
                         <label className="floating-label">Имя пользователя</label>

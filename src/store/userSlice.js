@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-//import axios from 'axios';
+import axios from 'axios';
 
 const initialState = {
     name: '',
     surname: '',
-    login: '',
+    username: '',
     dob: '',
     number: '',
     email: '',
-    avatar: null
+    avatar: null,
 };
 
 const userSlice = createSlice({
@@ -16,13 +16,16 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action) => {
-            state.login = action.payload.login;
+            state.username = action.payload.username;
             state.email = action.payload.email;
+        },
+        setLoginStatus: (state, action) => {
+            state.loginStatus = action.payload;
         },
         updateUser: (state, action) => {
             state.name = action.payload.name || state.name;
             state.surname = action.payload.surname || state.surname;
-            state.login = action.payload.login || state.login;
+            state.username = action.payload.username || state.username;
             state.dob = action.payload.dob || state.dob;
             state.number = action.payload.number || state.number;
             state.email = action.payload.email || state.email;
@@ -37,24 +40,31 @@ const userSlice = createSlice({
 });
 
 
-export const { setUser, logoutUser, updateUser, updateAvatar } = userSlice.actions;
+export const { setUser, setLoginStatus, logoutUser, updateUser, updateAvatar } = userSlice.actions;
 
-// export const asyncUpdateUser = (userData) => {
-//     return async dispatch => {
-//         try {
-//             const response = await axios.patch('/your/api/endpoint', userData);
-//             if (response.status !== 200) {
-//                 dispatch(updateUser(userData));
-//             } else {
-//                 console.log("Failed to update user data:", error);
-//             }
-//         } catch (error) {
-//             console.error("Failed to update user data:", error);
-//         }
-//     }
-// };
+export const loginUser = (loginData) => async (dispatch) => {
+    try {
+        console.log("Data in loginUser action:", loginData);
+        const response = await axios.post('http://207.154.198.7:8000/auth/login', loginData, {
+            headers: {
+                'Content-Type': 'application/json'      
+            },
+        });
+        
+        if (response.status === 200) {
+            dispatch(setUser({ username: loginData.username, email: '' }));
+            return 'LOGIN_SUCCESSFUL';
+        }
+    } catch (error) {
+        console.error("Error during login:", error);
+        if (error.response && error.response.status === 400) {
+            return 'LOGIN_FAILED';
+        }
+    }
+    return 'LOGIN_FAILED';  
+};
 
-// Simulating an API call with a 2-second delay
+
 export const asyncUpdateUser = (userData, imageFile) => {
     return async dispatch => {
         const formData = new FormData();
@@ -78,29 +88,13 @@ export const asyncUpdateUser = (userData, imageFile) => {
                     dispatch(updateUser(userData));
                 } else {
                     console.error("Failed to update user data: simulated error");
-                    // handle error
                 }
             }, 2000);
             
-            // Uncomment below lines once you have the endpoint ready
-            // const response = await axios.patch('/your/api/endpoint', formData, {
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data',
-            //     },
-            // });
-            
-            // if (response.status === 200) {
-            //     dispatch(updateUser(userData));
-            // } else {
-            //     // handle error
-            // }
         } catch (error) {
             console.error("Failed to update user data:", error);
-            // handle error
         }
     }
 };
-
-
 
 export default userSlice.reducer;
