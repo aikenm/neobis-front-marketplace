@@ -70,6 +70,13 @@ content {
     margin: 100px 0px 50px 0px;
 }
 
+.profile-info-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    padding: 2px;
+}
+
 .hidden-input-label {
     display: none;
 }
@@ -148,7 +155,7 @@ content {
 
 .add-number-button:hover {
     color: #353898;
-    scale: 0.94;
+    scale: 0.93;
 }
 
 .number-field {

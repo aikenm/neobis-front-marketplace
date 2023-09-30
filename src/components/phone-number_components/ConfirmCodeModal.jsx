@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { verifyCode } from '../../store/userSlice';
+import { sendPhoneNumber, verifyCode } from '../../store/userSlice';
 import confirmIcon from '../../images/confirm-number.svg' 
 
 function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
@@ -18,9 +18,16 @@ function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
     }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     setTimer(60);
     setCanResend(false);
+
+    const status = await dispatch(sendPhoneNumber(enteredNumber));
+    if (status === 'CODE_SENT') {
+      console.log("Code has been resent");
+    } else {
+      console.log("Failed to resend code");
+    }
   };
 
   function formatTime(seconds) {
