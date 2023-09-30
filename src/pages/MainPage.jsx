@@ -25,7 +25,7 @@ function MainPage() {
                         <span className='user-login'>{user.username}</span>
                         <span className='user-email'>{user.email}</span>
                     </div>
-                    <img src={avatar || defaultAvatar} alt='avatar' className='avatar'/>
+                    <img src={(avatar && avatar !== 'https://res.cloudinary.com/dpcjm5ifg/image/upload/v1/media/avatar_images/avatar.jpg') ? avatar : defaultAvatar} alt='avatar' className='avatar'/> 
                 </Link>
             </div>
             <div className='items-section'>

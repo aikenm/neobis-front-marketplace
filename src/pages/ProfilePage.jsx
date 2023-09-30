@@ -47,7 +47,7 @@ function ProfilePage() {
             <div className="menu-section">
                 <button onClick={() => setActiveComponent('profile')} 
                 className={`profile-info-button ${activeComponent === 'profile' ? 'active-button' : ''}`}>
-                    <img src={avatar || defaultAvatar} alt='avatar' className='avatar'/>
+                    <img src={(avatar && avatar !== 'https://res.cloudinary.com/dpcjm5ifg/image/upload/v1/media/avatar_images/avatar.jpg') ? avatar : defaultAvatar} alt='avatar' className='avatar'/> 
                     <div className='user-info'>
                         <span className='user-login'>{user.username}</span>
                         <span className='user-email'>{user.email}</span>

@@ -75,7 +75,7 @@ function ProfileInfo() {
             </div>
             <div className='content-section'>
                 <div className='personal-info-avatar-block'>
-                    <img src={avatar || defaultAvatar} alt='avatar' className='avatar'/> 
+                    <img src={(avatar && avatar !== 'https://res.cloudinary.com/dpcjm5ifg/image/upload/v1/media/avatar_images/avatar.jpg') ? avatar : defaultAvatar} alt='avatar' className='avatar'/> 
                     <input type="file" {...register('avatar')} id="avatar" name="avatar" onChange={onImageChange}  className='hidden-input-label'/>
                     <label htmlFor="avatar" className='file-label'>Выбрать фотографию</label>
                 </div>
