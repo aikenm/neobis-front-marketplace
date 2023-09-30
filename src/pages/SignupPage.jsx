@@ -92,10 +92,11 @@ function SignupPage() {
     };
 
     useEffect(() => {
-  if (userExists) {
-    dispatch(resetUserExists());
-  }
-}, [watchedUsername, watchedEmail, dispatch]);
+        if (userExists) {
+          dispatch(resetUserExists());
+        }
+    }, [watchedUsername, watchedEmail, dispatch, userExists]); 
+      
 
     useEffect(() => {
         dispatch(setEmail(''));

@@ -66,8 +66,8 @@ export const registerUser = (userData) => async (dispatch, getState) => {
     } catch (error) {
         if (error.response && error.response.data) {
             const { username, email } = error.response.data;
-            if (username && username.includes("user с таким username уже существует.") || 
-                email && email.includes("user с таким email уже существует.")) {
+            if ((username && username.includes("user с таким username уже существует.")) || 
+            (email && email.includes("user с таким email уже существует."))) {
                 dispatch(setUserExists(true)); 
             } else {
                 dispatch(setUserExists(false)); 

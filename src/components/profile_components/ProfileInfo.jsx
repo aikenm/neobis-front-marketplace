@@ -13,8 +13,6 @@ function ProfileInfo() {
     const avatar = useSelector(state => state.user.avatar);
     const dispatch = useDispatch();
 
-    const [selectedImage, setSelectedImage] = useState(null);
-
     const [showNumberModal, setShowNumberModal] = useState(false);
     const [showCodeModal, setShowCodeModal] = useState(false);
 
@@ -38,7 +36,6 @@ function ProfileInfo() {
             console.log("Avatar URL:", avatar);
 
             reader.onload = async (e) => {
-                setSelectedImage(e.target.result);
                 await dispatch(asyncUpdateUser({ avatar: e.target.result }, event.target.files[0]));
             };
 
