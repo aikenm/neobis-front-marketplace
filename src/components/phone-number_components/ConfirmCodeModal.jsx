@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateUser } from '../../store/userSlice';
-import axios from 'axios';
+import { verifyCode } from '../../store/userSlice';
 import confirmIcon from '../../images/confirm-number.svg' 
 
 function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
@@ -12,27 +11,12 @@ function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
   const checkCode = async (e) => {
     const value = e.target.value;
     if (value.length === 4) {
-      try {
-        const response = await axios.post('http://207.154.198.7:8000/auth/code-check', {
-          verification_code: value
-        }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        console.log(response);
-  
-        if (response.status === 200) {
-          dispatch(updateUser({ phone_number: enteredNumber }));
-          onConfirm();
-        }
-      } catch (error) {
-        console.error("Failed to verify code:", error);
+      const status = await dispatch(verifyCode(value, enteredNumber));
+      if (status === 'CODE_VERIFIED') {
+        onConfirm();
       }
     }
   };
-  
 
   const handleResend = () => {
     setTimer(60);

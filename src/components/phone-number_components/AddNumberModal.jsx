@@ -1,29 +1,19 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import { sendPhoneNumber } from '../../store/userSlice';
+import { useDispatch } from 'react-redux';
 import addNumberIcon from '../../images/add-number.svg'
 
 function AddNumberModal({ onClose, onNext }) {
+
   const { register, handleSubmit, watch } = useForm();
   const phone_number = watch('phone_number', '');
+  const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
-    try {
-      const response = await axios.put('http://207.154.198.7:8000/auth/code-send', {
-        phone_number: data.phone_number
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-
-      console.log(response);
-  
-      if (response.status === 201) {
-        onNext(data);
-      }
-    } catch (error) {
-      console.error("Failed to send code:", error);
+    const status = await dispatch(sendPhoneNumber(data.phone_number));
+    if (status === 'CODE_SENT') {
+      onNext(data);
     }
   };
 

@@ -116,4 +116,43 @@ export const asyncUpdateUser = (userData, imageFile) => async (dispatch) => {
     }
 };
 
+export const sendPhoneNumber = (phone_number) => async (dispatch) => {
+    try {
+      const response = await axios.put('http://207.154.198.7:8000/auth/code-send', {
+        phone_number
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (response.status === 201) {
+        return 'CODE_SENT';
+      }
+    } catch (error) {
+      console.error("Failed to send code:", error);
+      return 'CODE_SEND_FAILED';
+    }
+  };
+
+export const verifyCode = (verification_code, enteredNumber) => async (dispatch) => {
+    try {
+      const response = await axios.post('http://207.154.198.7:8000/auth/code-check', {
+        verification_code
+      }, {
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+  
+      if (response.status === 200) {
+        dispatch(updateUser({ phone_number: enteredNumber }));
+        return 'CODE_VERIFIED';
+      }
+    } catch (error) {
+      console.error("Failed to verify code:", error);
+      return 'CODE_VERIFICATION_FAILED';
+    }
+  };
+
 export default userSlice.reducer;
