@@ -17,33 +17,48 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setUser: (state, action) => {
-            Object.assign(state, action.payload);
+        setEntireUser: (state, action) => {
             state.loginStatus = true;
+            Object.assign(state, action.payload);
         },
         updateUser: (state, action) => {
             Object.assign(state, action.payload);
         },
         logoutUser: (state) => {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            state.loginStatus = false;
             Object.assign(state, initialState);
         }
     }
 });
 
-export const { setUser, logoutUser, updateUser } = userSlice.actions;
+export const {setEntireUser, logoutUser, updateUser } = userSlice.actions;
 
 export const loginUser = (loginData) => async (dispatch) => {
     try {
         const response = await axios.post('http://207.154.198.7:8000/auth/login', loginData, {
             headers: {
-                'Content-Type': 'application/json'      
+                'Content-Type': 'application/json'
             },
         });
-        
+
         if (response.status === 200) {
             localStorage.setItem('access_token', response.data.tokens.access);
             localStorage.setItem('refresh_token', response.data.tokens.refresh);
-            dispatch(setUser({ username: loginData.username, email: ''}));
+
+            const token = localStorage.getItem('access_token');  
+            const profileResponse = await axios.get('http://207.154.198.7:8000/auth/profile-view', {
+                headers: {
+                    'accept': 'application/json',
+                    'Authorization': `Bearer ${token}`  
+                }
+            });
+
+            if (profileResponse.status === 200) {
+                console.log(profileResponse.data);
+                dispatch(setEntireUser(profileResponse.data));
+            }
 
             return 'LOGIN_SUCCESSFUL';
         }
@@ -53,8 +68,9 @@ export const loginUser = (loginData) => async (dispatch) => {
             return 'LOGIN_FAILED';
         }
     }
-    return 'LOGIN_FAILED';  
+    return 'LOGIN_FAILED';
 };
+
 
 export const isTokenExpired = (token) => {
     const decodedToken = jwt_decode(token);
@@ -101,7 +117,7 @@ export const asyncUpdateUser = (userData, imageFile) => async (dispatch) => {
     try {
         const response = await apiCallWithTokenRefresh({
             method: 'put',
-            url: 'http://207.154.198.7:8000/auth/profile',
+            url: 'http://207.154.198.7:8000/auth/profile-update',
             data: formData,
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -116,14 +132,18 @@ export const asyncUpdateUser = (userData, imageFile) => async (dispatch) => {
     }
 };
 
+const token = localStorage.getItem('access_token');  
+const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+};
+
 export const sendPhoneNumber = (phone_number) => async (dispatch) => {
     try {
       const response = await axios.put('http://207.154.198.7:8000/auth/code-send', {
         phone_number
       }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        headers: headers
       });
   
       if (response.status === 201) {
@@ -140,9 +160,7 @@ export const verifyCode = (verification_code, enteredNumber) => async (dispatch)
       const response = await axios.post('http://207.154.198.7:8000/auth/code-check', {
         verification_code
       }, {
-          headers: {
-              'Content-Type': 'application/json'
-          }
+          headers: headers
       });
   
       if (response.status === 200) {

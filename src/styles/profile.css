@@ -119,6 +119,11 @@ content {
     font-family: 'Montserrat', sans-serif;
 }
 
+.personal-info-input {
+    background-color: #fff;
+    color: black;
+}
+
 .dob-input {
     cursor: text;
 }

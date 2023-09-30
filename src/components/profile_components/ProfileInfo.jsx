@@ -62,7 +62,7 @@ function ProfileInfo() {
         const value = getValues(fieldName);
         const updatedData = { [fieldName]: value }; 
         dispatch(asyncUpdateUser(updatedData));
-    };
+    }; 
 
     return (
         <div className='content'>
@@ -84,7 +84,7 @@ function ProfileInfo() {
                     <div className='personal-info-block1'>
                         <input type="text" {...register('first_name')} onBlur={() => handleBlur('first_name')} placeholder="Имя" className='personal-info-input'/>
                         <input type="text" {...register('last_name')} onBlur={() => handleBlur('last_name')} placeholder="Фамилия" className='personal-info-input'/>
-                        <input type="text" {...register('username')} onBlur={() => handleBlur('username')} placeholder="Имя пользователя" className='personal-info-input'/>
+                        <input type="text" {...register('username')} onBlur={() => handleBlur('username')} placeholder="Имя пользователя" className='personal-info-input' disabled/>
                         <input type="date" {...register('date_of_birth')} onBlur={() => handleBlur('date_of_birth')} placeholder="Дата рождения" className='personal-info-input dob-input'/> 
                     </div>
                     <div className='personal-info-block2'>
@@ -100,7 +100,7 @@ function ProfileInfo() {
                                 disabled
                             />
                         </div>
-                        <input type="email" {...register('email')} onBlur={() => handleBlur('email')} placeholder="Почта" className='personal-info-input'/>
+                        <input type="email" {...register('email')} onBlur={() => handleBlur('email')} placeholder="Почта" className='personal-info-input' disabled/>
                     </div>
                 </form>
                 {showNumberModal && <AddNumberModal onClose={() => setShowNumberModal(false)} onNext={handleNext} />}
