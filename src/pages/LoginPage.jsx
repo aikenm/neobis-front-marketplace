@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loginUser } from '../store/userSlice';
 import logo from '../images/logo.svg';
 import eyeOpen from '../images/eye-open.svg';
@@ -18,8 +18,6 @@ function LoginPage() {
     const [showTooltip, setShowTooltip] = useState(false);
     const [loginFailed, setLoginFailed] = useState(false);
     const [disableLoginButton, setDisableLoginButton] = useState(false);
-
-    const loginStatus = useSelector((state) => state.user.loginStatus);
 
     const [inputValues, setInputValues] = useState({
         username: '',

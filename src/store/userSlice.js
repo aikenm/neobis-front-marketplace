@@ -1,14 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 const initialState = {
-    name: '',
-    surname: '',
-    username: '',
-    dob: '',
-    number: '',
-    email: '',
     avatar: null,
+    first_name: '',
+    last_name: '',
+    username: '',
+    date_of_birth: '',
+    phone_number: '',
+    email: '',
+    loginStatus: false
 };
 
 const userSlice = createSlice({
@@ -16,22 +18,11 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action) => {
-            state.username = action.payload.username;
-            state.email = action.payload.email;
-        },
-        setLoginStatus: (state, action) => {
-            state.loginStatus = action.payload;
+            Object.assign(state, action.payload);
+            state.loginStatus = true;
         },
         updateUser: (state, action) => {
-            state.name = action.payload.name || state.name;
-            state.surname = action.payload.surname || state.surname;
-            state.username = action.payload.username || state.username;
-            state.dob = action.payload.dob || state.dob;
-            state.number = action.payload.number || state.number;
-            state.email = action.payload.email || state.email;
-        },
-        updateAvatar: (state, action) => {
-            state.avatar = action.payload;
+            Object.assign(state, action.payload);
         },
         logoutUser: (state) => {
             Object.assign(state, initialState);
@@ -39,12 +30,10 @@ const userSlice = createSlice({
     }
 });
 
-
-export const { setUser, setLoginStatus, logoutUser, updateUser, updateAvatar } = userSlice.actions;
+export const { setUser, logoutUser, updateUser } = userSlice.actions;
 
 export const loginUser = (loginData) => async (dispatch) => {
     try {
-        console.log("Data in loginUser action:", loginData);
         const response = await axios.post('http://207.154.198.7:8000/auth/login', loginData, {
             headers: {
                 'Content-Type': 'application/json'      
@@ -52,7 +41,10 @@ export const loginUser = (loginData) => async (dispatch) => {
         });
         
         if (response.status === 200) {
-            dispatch(setUser({ username: loginData.username, email: '' }));
+            localStorage.setItem('access_token', response.data.tokens.access);
+            localStorage.setItem('refresh_token', response.data.tokens.refresh);
+            dispatch(setUser({ username: loginData.username, email: ''}));
+
             return 'LOGIN_SUCCESSFUL';
         }
     } catch (error) {
@@ -64,36 +56,63 @@ export const loginUser = (loginData) => async (dispatch) => {
     return 'LOGIN_FAILED';  
 };
 
+export const isTokenExpired = (token) => {
+    const decodedToken = jwt_decode(token);
+    const currentDate = new Date();
+    const expiryDate = new Date(decodedToken.exp * 1000);
+    return currentDate > expiryDate;
+};
 
-export const asyncUpdateUser = (userData, imageFile) => {
-    return async dispatch => {
-        const formData = new FormData();
+export const refreshToken = async () => {
+    try {
+        const response = await axios.post('http://207.154.198.7:8000/auth/token/refresh/', {
+            refresh: localStorage.getItem('refresh_token')
+        });
+        console.log(response);
+        localStorage.setItem('access_token', response.data.access);
+    } catch (error) {
+        console.error("Failed to refresh token:", error);
+    }
+};
+
+export const apiCallWithTokenRefresh = async (axiosConfig) => {
+    const storedAccessToken = localStorage.getItem('access_token');
+    const storedRefreshToken = localStorage.getItem('refresh_token');
+
+    if (storedAccessToken && isTokenExpired(storedAccessToken) && storedRefreshToken) {
+        await refreshToken();
+    }
+
+    if (storedAccessToken) {
+        axios.defaults.headers['Authorization'] = `Bearer ${storedAccessToken}`;
+    }
+
+    return axios(axiosConfig);
+};
+
+export const asyncUpdateUser = (userData, imageFile) => async (dispatch) => {
+    const formData = new FormData();
+    for (let key in userData) {
+        formData.append(key, userData[key]);
+    }
+    if (imageFile) {
+        formData.append('avatar', imageFile); 
+    }
+    try {
+        const response = await apiCallWithTokenRefresh({
+            method: 'put',
+            url: 'http://207.154.198.7:8000/auth/profile',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
         
-        for (let key in userData) {
-            formData.append(key, userData[key]);
+        if (response.status === 200) {
+            dispatch(updateUser(response.data));
         }
-
-        if (imageFile) {
-            formData.append('avatar', imageFile); 
-        }
-
-        try {
-            // Simulating an API call with a 2-second delay
-            setTimeout(() => {
-                const simulatedResponse = {
-                    status: 200,
-                };
-
-                if (simulatedResponse.status === 200) {
-                    dispatch(updateUser(userData));
-                } else {
-                    console.error("Failed to update user data: simulated error");
-                }
-            }, 2000);
-            
-        } catch (error) {
-            console.error("Failed to update user data:", error);
-        }
+    } catch (error) {
+        console.error("Failed to update user data:", error);
     }
 };
 

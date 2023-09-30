@@ -1,16 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../../store/userSlice';
+import axios from 'axios';
 import confirmIcon from '../../images/confirm-number.svg' 
 
 function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
-  const { register } = useForm();
   const dispatch = useDispatch();
+  
+  const checkCode = async (e) => {
+    const value = e.target.value;
+    if (value.length === 4) {
+      try {
+        const response = await axios.post('http://207.154.198.7:8000/auth/code-check', {
+          verification_code: value
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
-  const generatedCode = 2222;
+        console.log(response);
+  
+        if (response.status === 200) {
+          dispatch(updateUser({ phone_number: enteredNumber }));
+          onConfirm();
+        }
+      } catch (error) {
+        console.error("Failed to verify code:", error);
+      }
+    }
+  };
+  
+
+  const handleResend = () => {
+    setTimer(60);
+    setCanResend(false);
+  };
+
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainderSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainderSeconds.toString().padStart(2, '0')}`;
+  }
 
   useEffect(() => {
     let interval;
@@ -26,30 +59,6 @@ function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
 
     return () => clearInterval(interval);
   }, [timer, canResend]);
-  
-  const checkCode = (e) => {
-    const value = e.target.value;
-    if (value.length === 4) {
-      const enteredCode = Number(value); 
-      if (enteredCode === generatedCode) {
-        dispatch(updateUser({ number: enteredNumber }));
-        onConfirm();
-      } else {
-        console.log("Incorrect code");
-      }
-    }
-  };
-
-  const handleResend = () => {
-    setTimer(60);
-    setCanResend(false);
-  };
-
-  function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const remainderSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${remainderSeconds.toString().padStart(2, '0')}`;
-  }
 
   return (
     <div className="modal-overlay">
@@ -60,7 +69,6 @@ function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
                 <img src={confirmIcon} alt='confirmIcon' />
                 <h5 className='modal-number-subtitle'>Введите код из СМС</h5>
                     <input type="text" 
-                    {...register('confirmationCode')} 
                     placeholder="0000" 
                     className='code-modal-input'
                     maxLength="4" 

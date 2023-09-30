@@ -36,7 +36,6 @@ function SignupPage() {
             }, 5000);
         }
     };
-    
 
     const handleNextStep = async (data) => {
         if (step === 1) {

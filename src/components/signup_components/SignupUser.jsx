@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import arrow from '../../images/arrow.svg';
 import warning from '../../images/warning.svg';
