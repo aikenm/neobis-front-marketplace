@@ -13,6 +13,8 @@ function ProfileInfo() {
     const avatar = useSelector(state => state.user.avatar);
     const dispatch = useDispatch();
 
+    const [date, setDate] = useState('');
+
     const [showNumberModal, setShowNumberModal] = useState(false);
     const [showCodeModal, setShowCodeModal] = useState(false);
 
@@ -85,7 +87,7 @@ function ProfileInfo() {
                         <input type="text" {...register('first_name')} onBlur={() => handleBlur('first_name')} placeholder="Имя" className='personal-info-input'/>
                         <input type="text" {...register('last_name')} onBlur={() => handleBlur('last_name')} placeholder="Фамилия" className='personal-info-input'/>
                         <input type="text" {...register('username')} onBlur={() => handleBlur('username')} placeholder="Имя пользователя" className='personal-info-input' disabled/>
-                        <input type="date" {...register('date_of_birth')} onBlur={() => handleBlur('date_of_birth')} placeholder="Дата рождения" className='personal-info-input dob-input'/> 
+                        <input type="date" {...register('date_of_birth')} onBlur={() => handleBlur('date_of_birth')} placeholder="Дата рождения" onChange={({ target: { value } }) => setDate(value)} className={`personal-info-input ${date ? 'filled-dob' : 'empty-dob'}`}/> 
                     </div>
                     <div className='personal-info-block2'>
                         <div className="number-field-wrapper">
@@ -94,7 +96,7 @@ function ProfileInfo() {
                                 type="text" 
                                 {...register('phone_number')} 
                                 onBlur={() => handleBlur('phone_number')} 
-                                value={user.phone_number || "0(000)000 000"}
+                                value={user.phone_number}
                                 placeholder="0(000)000 000" 
                                 className='personal-info-input number-field' 
                                 disabled

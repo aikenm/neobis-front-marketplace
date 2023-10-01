@@ -74,7 +74,9 @@ content {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    padding: 2px;
+    box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
 }
 
 .hidden-input-label {
@@ -124,16 +126,26 @@ content {
     outline: none;
     font-size: 15px;
     font-family: 'Montserrat', sans-serif;
-}
-
-.personal-info-input {
     background-color: #fff;
     color: black;
+}
+
+.personal-info-input::placeholder {
+    color: #C0C0C0;
 }
 
 .dob-input {
     cursor: text;
 }
+
+.empty-dob {
+    color: #C0C0C0;
+  }
+  
+.filled-dob {
+    color: black;
+}
+  
 
 .number-field-wrapper {
     display: flex;
@@ -160,6 +172,10 @@ content {
 
 .number-field {
     text-align: right;
+}
+
+.number-field::placeholder {
+    color: #C0C0C0;
 }
   
 .number-field:disabled {

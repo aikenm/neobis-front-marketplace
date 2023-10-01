@@ -7,15 +7,17 @@ import ProfilePage from './pages/ProfilePage';
 import MainPage from './pages/MainPage';
 
 const App = () => {
-  const loginStatus = useSelector((state) => state.user.loginStatus); 
+  //const loginStatus = useSelector((state) => state.user.loginStatus); 
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/profile" element={loginStatus ? <ProfilePage /> : <Navigate to="/" />} />
-        <Route path="/main" element={loginStatus ? <MainPage /> : <Navigate to="/" />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/main" element={<MainPage />} />
+        {/* <Route path="/profile" element={loginStatus ? <ProfilePage /> : <Navigate to="/" />} />
+        <Route path="/main" element={loginStatus ? <MainPage /> : <Navigate to="/" />} /> */}
       </Routes>
     </BrowserRouter>
   );

@@ -310,9 +310,9 @@
 }
 
 .profile-info-button:hover {
-    box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
-    -webkit-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
-    -moz-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    box-shadow: 0px 0px 8px -1px rgba(81,83,179,0.75);
+    -webkit-box-shadow: 0px 0px 8px -1px rgba(81,83,179,0.75);
+    -moz-box-shadow: 0px 0px 8px -1px rgba(81,83,179,0.75);
     background-color: #f7f6f9;
     scale: 1.02;
 }
@@ -357,9 +357,9 @@
 }
 
 .menu-button:hover {
-    box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
-    -webkit-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
-    -moz-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    box-shadow: 0px 0px 8px -1px rgba(81,83,179,0.75);
+    -webkit-box-shadow: 0px 0px 8px -1px rgba(81,83,179,0.75);
+    -moz-box-shadow: 0px 0px 8px -1px rgba(81,83,179,0.75);
     background-color: #f7f6f9;
     scale: 1.02;
 }
@@ -377,9 +377,9 @@
 }
 
 .active-button {
-    box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
-    -webkit-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
-    -moz-box-shadow: 0px 0px 10px 0px rgba(85,87,164,0.75);
+    box-shadow: 0px 0px 8px -1px rgba(81,83,179,0.75);
+    -webkit-box-shadow: 0px 0px 8px -1px rgba(81,83,179,0.75);
+    -moz-box-shadow: 0px 0px 8px -1px rgba(81,83,179,0.75);
     background-color: #f7f6f9;
     scale: 1.02;
     cursor: default;
@@ -419,6 +419,9 @@
     transition: all 0.3s ease;
     text-decoration: none;
     color: black;
+    box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
 }
 
 .main-profile-button:hover {
@@ -441,6 +444,9 @@
     width: 215px;
     margin-top: 0;
     margin-left: auto;
+    box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
 }
 
 .items-section {

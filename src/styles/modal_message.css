@@ -245,4 +245,140 @@
   color: #5458EA;
 }
 
+ /* Add item modal */
 
+.modal-add-item-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  padding: 55px 10px;
+  border-radius: 40px;
+  width: 570px;
+  height: 480px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.file-image-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.image-block-label {
+  width: 76px;
+  height: 110px;
+  border-radius: 12px;
+  display: flex;
+  cursor: pointer;
+}
+
+.selected-images-wrapper {
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  width: 450px; 
+  height: 110px;
+  padding-right: 5px;
+  margin-left: 10px;
+  overflow-x: scroll;
+}
+
+.file-image {
+  width: 76px;
+  height: 96px;
+  align-self: center;
+  border-radius: 12px;  
+  box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+  transition: background-color 0.2s ease;
+  background-color: #F7F6F9;
+}
+
+.file-image:hover {
+  background-color: #e2e5ea;
+}
+
+.selected-image {
+  display: flex;
+  width: 76px;
+  height: 96px;
+  border-radius: 12px;
+  margin-right: 10px;
+  object-fit: cover;
+  box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+}
+
+.add-product-input {
+  width: 97%;
+  height: 40px;
+  border-radius: 12px;
+  margin-top: 7px;
+  border: none;
+  padding-left: 10px;
+  background-color: #F7F6F9;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  outline: none;
+  transition: background-color 0.2s ease;
+}
+
+.add-product-input:hover {
+  background-color: #e2e5ea;
+}
+
+.add-product-input::placeholder {
+ color: #C0C0C0;
+}
+
+.add-product-button {
+  width: 280px;
+  height: 44px;
+  background-color: #5458EA;
+  border-radius: 16px;
+  font-weight: 700;
+  color: #fff;
+  border: none;
+  margin-top: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
+  transition: background-color 0.3s ease, scale 0.3s ease;
+}
+
+.add-product-button:hover {
+  background-color: #323486;
+  scale: 0.95;
+}
+
+.add-product-button:disabled {
+  background-color: #F7F6F9;
+  color: #9CA4AB;
+  cursor: default;
+}
+
+.add-product-button:disabled:hover {
+  scale: 1;
+}
+
+.add-product-close-button {
+  position: absolute;
+  top: 25%;
+  left: 64%;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: scale 0.3s ease, color 0.3s ease;
+}
+
+.add-product-close-button:hover {
+  scale: 1.4;
+  color: #5458EA;
+}
