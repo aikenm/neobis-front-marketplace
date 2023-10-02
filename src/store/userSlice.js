@@ -68,6 +68,23 @@ export const loginUser = (loginData) => async (dispatch) => {
     return 'LOGIN_FAILED';
 };
 
+export const fetchAndSetUser = createAsyncThunk(
+    'user/fetchAndSetUser',
+    async (_, { dispatch }) => {
+      const token = localStorage.getItem('access_token');
+      if (!token) return;
+      try {
+        const response = await axios.get('http://157.230.18.205:8000/auth/profile-view', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        dispatch(setEntireUser(response.data));
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    }
+  );
 
 export const refreshToken = async () => {
     try {
@@ -164,21 +181,3 @@ export const verifyCode = (verification_code, enteredNumber) => async (dispatch)
   };
 
 export default userSlice.reducer;
-
-export const fetchAndSetUser = createAsyncThunk(
-    'user/fetchAndSetUser',
-    async (_, { dispatch }) => {
-      const token = localStorage.getItem('access_token');
-      if (!token) return;
-      try {
-        const response = await axios.get('http://157.230.18.205:8000/auth/profile-view', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        dispatch(setEntireUser(response.data));
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-      }
-    }
-  );

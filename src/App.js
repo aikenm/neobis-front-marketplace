@@ -13,6 +13,7 @@ const App = () => {
   const loginStatus = useSelector((state) => state.user.loginStatus); 
 
   useEffect(() => {
+    console.log(localStorage);
     const token = localStorage.getItem('access_token');
     if (token && !isTokenExpired(token)) {
         setLoading(true);

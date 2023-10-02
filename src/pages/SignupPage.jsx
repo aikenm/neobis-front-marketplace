@@ -73,8 +73,7 @@ function SignupPage() {
                     password: watchedPassword,
                     password_confirm: watchedPasswordRepeat
                 }));
-                dispatch(setEntireUser({ email: watchedEmail, username: watchedUsername }));
-                navigate('/profile');          
+                navigate('/');          
             }
         }
     };
