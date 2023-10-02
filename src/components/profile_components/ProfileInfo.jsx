@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
@@ -13,14 +13,12 @@ function ProfileInfo() {
     const avatar = useSelector(state => state.user.avatar);
     const dispatch = useDispatch();
 
-    const [date, setDate] = useState('');
-
     const [showNumberModal, setShowNumberModal] = useState(false);
     const [showCodeModal, setShowCodeModal] = useState(false);
 
     const [enteredNumber, setEnteredNumber] = useState('');
 
-    const { register, getValues } = useForm({
+    const { register, getValues, setValue } = useForm({
         defaultValues: {
             avatar: user.avatar || '',
             first_name: user.first_name || '',
@@ -62,9 +60,22 @@ function ProfileInfo() {
 
     const handleBlur = (fieldName) => {
         const value = getValues(fieldName);
+        if (!value || value.trim() === '') {
+            return;
+        }
         const updatedData = { [fieldName]: value }; 
         dispatch(asyncUpdateUser(updatedData));
-    }; 
+    };
+
+    useEffect(() => {
+        setValue('first_name', user.first_name || '');
+        setValue('last_name', user.last_name || '');
+        setValue('username', user.username || '');
+        setValue('date_of_birth', user.date_of_birth || '');
+        setValue('phone_number', user.phone_number || '');
+        setValue('email', user.email || '');
+      }, [user, setValue]);
+    
 
     return (
         <div className='content'>
@@ -87,7 +98,7 @@ function ProfileInfo() {
                         <input type="text" {...register('first_name')} onBlur={() => handleBlur('first_name')} placeholder="Имя" className='personal-info-input'/>
                         <input type="text" {...register('last_name')} onBlur={() => handleBlur('last_name')} placeholder="Фамилия" className='personal-info-input'/>
                         <input type="text" {...register('username')} onBlur={() => handleBlur('username')} placeholder="Имя пользователя" className='personal-info-input' disabled/>
-                        <input type="date" {...register('date_of_birth')} onBlur={() => handleBlur('date_of_birth')} placeholder="Дата рождения" onChange={({ target: { value } }) => setDate(value)} className={`personal-info-input ${date ? 'filled-dob' : 'empty-dob'}`}/> 
+                        <input type="date" {...register('date_of_birth')} onBlur={() => handleBlur('date_of_birth')} placeholder="Дата рождения" className={`personal-info-input ${user.date_of_birth ? 'filled-dob' : 'empty-dob'}`}/> 
                     </div>
                     <div className='personal-info-block2'>
                         <div className="number-field-wrapper">

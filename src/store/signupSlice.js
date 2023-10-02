@@ -59,7 +59,7 @@ export const {
 
 export const registerUser = (userData) => async (dispatch, getState) => {
     try {
-        const response = await axios.post('http://207.154.198.7:8000/auth/register', userData);
+        const response = await axios.post('http://157.230.18.205:8000/auth/register', userData);
         if (response.status === 200 || response.status === 201) {
             dispatch(resetUserExists()); 
         }

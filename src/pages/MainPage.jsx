@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import ItemAddModal from '../components/main_components/ItemAddModal';  
+import ItemAddModal from '../components/main_components/ItemAddModal'; 
+import ItemDetailModal from '../components/main_components/ItemDetailModal'; 
 import defaultAvatar from '../images/avatar.svg';
 import miniLogo from '../images/mini-logo.svg';
+import testImage from '../images/image 2test.png'
+import likeIcon from '../images/like-icon.svg'
 
 function MainPage() {
-  const [showModal, setShowModal] = useState(false);
+  const [showaddModal, setShowaddModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const user = useSelector((state) => state.user);
   const avatar = useSelector((state) => state.user.avatar);
+
+  const handleProductClick = () => {
+    setShowDetailModal(true);  
+  };
 
   return (
     <div className='main-page'>
@@ -19,7 +27,7 @@ function MainPage() {
         </div>
         <button 
           className='form-button add-item-button'
-          onClick={() => setShowModal(true)}>
+          onClick={() => setShowaddModal(true)}>
             Подать объявление
         </button>
         <Link to="/profile" className='main-profile-button'>
@@ -31,10 +39,18 @@ function MainPage() {
         </Link>
       </div>
       <div className='items-section'>
-        <h1>sec</h1>
+        <div onClick={handleProductClick} className='temp-product-card'>
+            <img src={testImage} alt='' className='product-card-image' />
+            <span className='product-card-name'>Adidas Yeezy 500</span>
+            <span className='product-card-price'>23 000 $</span>
+            <div className='product-card-like-wrapper'>
+                <button className='product-card-like-button'><img src={likeIcon} alt='' className='product-card-like-icon' /></button><span className='product-card-likes'>100</span>
+            </div>
+        </div>
       </div>
 
-      {showModal && <ItemAddModal onClose={() => setShowModal(false)} />}
+      {showaddModal && <ItemAddModal onClose={() => setShowaddModal(false)} />}
+      {showDetailModal && <ItemDetailModal onClose={() => setShowDetailModal(false)} />}
     </div>
   );
 }

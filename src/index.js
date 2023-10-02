@@ -5,7 +5,7 @@ import store from './store/store';
 import './styles/image_block.css';
 import './styles/pages.css';
 import './styles/core.css';
-import './styles/modal_message.css';
+import './styles/modal_windows.css';
 import './styles/profile.css';
 
 import App from './App'; 

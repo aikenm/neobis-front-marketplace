@@ -32,7 +32,7 @@ const ItemAddModal = ({ onClose }) => {
 
   return (
     <div className="modal-overlay">
-        <div className="modal-add-item-content">
+        <div className="modal-add-product-content">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="file-image-section">
                     <label className="image-block-label">

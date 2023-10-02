@@ -1,6 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
+
+export const isTokenExpired = (token) => {
+    const decodedToken = jwt_decode(token);
+    const currentDate = new Date();
+    const expiryDate = new Date(decodedToken.exp * 1000);
+    return currentDate > expiryDate;
+};
 
 const initialState = {
     avatar: null,
@@ -10,8 +17,9 @@ const initialState = {
     date_of_birth: '',
     phone_number: '',
     email: '',
-    loginStatus: false
+    loginStatus: !!localStorage.getItem('access_token') && !isTokenExpired(localStorage.getItem('access_token'))
 };
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -37,7 +45,7 @@ export const {setEntireUser, logoutUser, updateUser } = userSlice.actions;
 
 export const loginUser = (loginData) => async (dispatch) => {
     try {
-        const response = await axios.post('http://207.154.198.7:8000/auth/login', loginData, {
+        const response = await axios.post('http://157.230.18.205:8000/auth/login', loginData, {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -47,18 +55,7 @@ export const loginUser = (loginData) => async (dispatch) => {
             localStorage.setItem('access_token', response.data.tokens.access);
             localStorage.setItem('refresh_token', response.data.tokens.refresh);
 
-            const token = localStorage.getItem('access_token');  
-            const profileResponse = await axios.get('http://207.154.198.7:8000/auth/profile-view', {
-                headers: {
-                    'accept': 'application/json',
-                    'Authorization': `Bearer ${token}`  
-                }
-            });
-
-            if (profileResponse.status === 200) {
-                console.log(profileResponse.data);
-                dispatch(setEntireUser(profileResponse.data));
-            }
+            dispatch(fetchAndSetUser());
 
             return 'LOGIN_SUCCESSFUL';
         }
@@ -71,17 +68,9 @@ export const loginUser = (loginData) => async (dispatch) => {
     return 'LOGIN_FAILED';
 };
 
-
-export const isTokenExpired = (token) => {
-    const decodedToken = jwt_decode(token);
-    const currentDate = new Date();
-    const expiryDate = new Date(decodedToken.exp * 1000);
-    return currentDate > expiryDate;
-};
-
 export const refreshToken = async () => {
     try {
-        const response = await axios.post('http://207.154.198.7:8000/auth/token/refresh/', {
+        const response = await axios.post('http://157.230.18.205:8000/auth/token/refresh/', {
             refresh: localStorage.getItem('refresh_token')
         });
         console.log(response);
@@ -117,7 +106,7 @@ export const asyncUpdateUser = (userData, imageFile) => async (dispatch) => {
     try {
         const response = await apiCallWithTokenRefresh({
             method: 'put',
-            url: 'http://207.154.198.7:8000/auth/profile-update',
+            url: 'http://157.230.18.205:8000/auth/profile-update',
             data: formData,
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -140,7 +129,7 @@ const headers = {
 
 export const sendPhoneNumber = (phone_number) => async (dispatch) => {
     try {
-      const response = await axios.put('http://207.154.198.7:8000/auth/code-send', {
+      const response = await axios.put('http://157.230.18.205:8000/auth/code-send', {
         phone_number
       }, {
         headers: headers
@@ -157,7 +146,7 @@ export const sendPhoneNumber = (phone_number) => async (dispatch) => {
 
 export const verifyCode = (verification_code, enteredNumber) => async (dispatch) => {
     try {
-      const response = await axios.post('http://207.154.198.7:8000/auth/code-check', {
+      const response = await axios.post('http://157.230.18.205:8000/auth/code-check', {
         verification_code
       }, {
           headers: headers
@@ -174,3 +163,21 @@ export const verifyCode = (verification_code, enteredNumber) => async (dispatch)
   };
 
 export default userSlice.reducer;
+
+export const fetchAndSetUser = createAsyncThunk(
+    'user/fetchAndSetUser',
+    async (_, { dispatch }) => {
+      const token = localStorage.getItem('access_token');
+      if (!token) return;
+      try {
+        const response = await axios.get('http://157.230.18.205:8000/auth/profile-view', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        dispatch(setEntireUser(response.data));
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    }
+  );
