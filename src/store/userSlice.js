@@ -55,7 +55,7 @@ export const loginUser = (loginData) => async (dispatch) => {
             localStorage.setItem('access_token', response.data.tokens.access);
             localStorage.setItem('refresh_token', response.data.tokens.refresh);
 
-            dispatch(fetchAndSetUser());
+            await dispatch(fetchAndSetUser());
 
             return 'LOGIN_SUCCESSFUL';
         }
@@ -67,6 +67,7 @@ export const loginUser = (loginData) => async (dispatch) => {
     }
     return 'LOGIN_FAILED';
 };
+
 
 export const refreshToken = async () => {
     try {
