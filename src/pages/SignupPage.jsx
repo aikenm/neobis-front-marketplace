@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setEmail, setUsername, setPassword, nextStep, prevStep, registerUser, resetUserExists } from '../store/signupSlice';
-import { setEntireUser } from '../store/userSlice';
 import logo from '../images/logo.svg';
 import SignupUser from '../components/signup_components/SignupUser';
 import SignupPassword from '../components/signup_components/SignupPassword';

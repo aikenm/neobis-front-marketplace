@@ -91,6 +91,10 @@
     color: #fff;
 }
 
+.form-button:disabled:hover {
+    scale: 1;
+}
+
 .tooltip {
     display: flex;
     align-items: center;
