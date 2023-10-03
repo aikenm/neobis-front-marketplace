@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import arrow from '../../images/arrow.svg';
 import warning from '../../images/warning.svg';
@@ -11,9 +11,24 @@ function SignupUsername({
     handleUserExists
 }) {
 
-    const handleInputChange = () => {
+    const [isFormComplete, setFormComplete] = useState(false);
+    const [formData, setFormData] = useState({
+        username: '',
+        email: ''
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
         handleUserExists(true);
     };
+
+    useEffect(() => {
+        setFormComplete(formData.username !== '' && formData.email !== '');
+    }, [formData]);
 
     return (
         <>
@@ -51,7 +66,8 @@ function SignupUsername({
             {showTooltip && <div className="signup-tooltip show"><img src={warning} alt='Warning sign' className='warning-icon'/>Данный пользователь уже зарегистрирован</div>}
             <button 
                 type="submit" 
-                className='form-button' 
+                className='form-button'
+                disabled={!isFormComplete}  
             >
                 Далее
             </button>
