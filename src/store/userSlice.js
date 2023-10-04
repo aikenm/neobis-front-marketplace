@@ -45,11 +45,13 @@ export const {setEntireUser, logoutUser, updateUser } = userSlice.actions;
 
 export const loginUser = (loginData) => async (dispatch) => {
     try {
-        const response = await axios.post('http://157.230.18.205:8000/auth/login', loginData, {
+        const response = await axios.post('https://www.ishak-backender.org.kg/auth/login/', loginData, {
             headers: {
                 'Content-Type': 'application/json'
             },
         });
+
+        console.log(response.data);
 
         if (response.status === 200) {
             localStorage.setItem('access_token', response.data.tokens.access);
@@ -74,7 +76,7 @@ export const fetchAndSetUser = createAsyncThunk(
       const token = localStorage.getItem('access_token');
       if (!token) return;
       try {
-        const response = await axios.get('http://157.230.18.205:8000/auth/profile-view', {
+        const response = await axios.get('https://www.ishak-backender.org.kg/auth/profile-view/', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -88,7 +90,7 @@ export const fetchAndSetUser = createAsyncThunk(
 
 export const refreshToken = async () => {
     try {
-        const response = await axios.post('http://157.230.18.205:8000/auth/token/refresh/', {
+        const response = await axios.post('https://www.ishak-backender.org.kg/auth/token/refresh/', {
             refresh: localStorage.getItem('refresh_token')
         });
         console.log(response);
@@ -124,7 +126,7 @@ export const asyncUpdateUser = (userData, imageFile) => async (dispatch) => {
     try {
         const response = await apiCallWithTokenRefresh({
             method: 'put',
-            url: 'http://157.230.18.205:8000/auth/profile-update',
+            url: 'https://www.ishak-backender.org.kg/auth/profile-update/',
             data: formData,
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -147,7 +149,7 @@ const headers = {
 
 export const sendPhoneNumber = (phone_number) => async (dispatch) => {
     try {
-      const response = await axios.put('http://157.230.18.205:8000/auth/code-send', {
+      const response = await axios.put('https://www.ishak-backender.org.kg/auth/code-send/', {
         phone_number
       }, {
         headers: headers
@@ -164,7 +166,7 @@ export const sendPhoneNumber = (phone_number) => async (dispatch) => {
 
 export const verifyCode = (verification_code, enteredNumber) => async (dispatch) => {
     try {
-      const response = await axios.post('http://157.230.18.205:8000/auth/code-check', {
+      const response = await axios.post('https://www.ishak-backender.org.kg/auth/code-check/', {
         verification_code
       }, {
           headers: headers

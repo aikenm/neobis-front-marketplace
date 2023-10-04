@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { fetchAndSetUser, isTokenExpired } from './store/userSlice';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
@@ -10,7 +10,7 @@ import MainPage from './pages/MainPage';
 const App = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  //const loginStatus = useSelector((state) => state.user.loginStatus); 
+  const loginStatus = useSelector((state) => state.user.loginStatus); 
 
   useEffect(() => {
     console.log(localStorage);
@@ -31,10 +31,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/main" element={<MainPage />} />
-        {/* <Route path="/profile" element={loginStatus ? <ProfilePage /> : <Navigate to="/" />} />
-        <Route path="/main" element={loginStatus ? <MainPage /> : <Navigate to="/" />} /> */}
+        <Route path="/profile" element={loginStatus ? <ProfilePage /> : <Navigate to="/" />} />
+        <Route path="/main" element={loginStatus ? <MainPage /> : <Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
   );
