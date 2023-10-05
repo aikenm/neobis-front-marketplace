@@ -7,13 +7,13 @@ function ProductCard({ product, handleProductClick }) {
     const [isLiked, setIsLiked] = useState(false); 
 
     const toggleLike = (event) => {
-        event.stopPropagation();  // Stop event propagation
+        event.stopPropagation();  
         setIsLiked(!isLiked);
-        // You can also update the likes on the server here.
+       
     };
 
         return (
-        <div onClick={handleProductClick} className='product-card'>
+        <div onClick={() => handleProductClick(product.id)} className='product-card'>
             <img src={product.photo || testImage} alt='' className='product-card-image' />
             <span className='product-card-name'>{product.name || "Default Name"}</span>
             <span className='product-card-price'>$ {parseInt(product.price, 10) || "Default Price"}</span>

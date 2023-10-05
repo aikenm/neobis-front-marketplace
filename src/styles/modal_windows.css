@@ -457,9 +457,9 @@
 
 .product-detail-close-button {
   position: absolute;
-  top: 13%;
-  left: 64%;
-  font-size: 20px;
+  top: 12.5%;
+  margin-left: 505px;
+  font-size: 23px;
   background: none;
   border: none;
   cursor: pointer;

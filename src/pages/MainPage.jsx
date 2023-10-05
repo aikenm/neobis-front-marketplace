@@ -11,6 +11,8 @@ import ProductCard from '../components/product_components/ProductCard';
 function MainPage() {
   const [showaddModal, setShowaddModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+
   const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.user);
   const avatar = useSelector((state) => state.user.avatar);
@@ -30,13 +32,14 @@ function MainPage() {
     }
   };
 
+  const handleProductClick = (id) => {
+    setSelectedProductId(id);
+    setShowDetailModal(true);
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  const handleProductClick = () => {
-    setShowDetailModal(true);  
-  };
 
   return (
     <div className='main-page'>
@@ -65,7 +68,7 @@ function MainPage() {
       </div>
 
       {showaddModal && <ItemAddModal onClose={() => setShowaddModal(false)} />}
-      {showDetailModal && <ItemDetailModal onClose={() => setShowDetailModal(false)} />}
+      {showDetailModal && <ItemDetailModal productId={selectedProductId} onClose={() => setShowDetailModal(false)} />}
     </div>
   );
 }

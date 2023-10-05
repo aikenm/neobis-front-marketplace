@@ -1,31 +1,50 @@
-import React from 'react';
-import testImage from '../../images/product_image_samples/image 2test.png'
-import likeIcon from '../../images/like-icon.svg'
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchProductDetail } from '../../store/productSlice';
+import testImage from '../../images/product_image_samples/image 2test.png';
+import likeIcon from '../../images/like-icon.svg';
 
-const ItemAddModal = ({ onClose }) => {
+const ItemDetailModal = ({ onClose, productId }) => {
+  const dispatch = useDispatch();
+  
+  const [isLoading, setIsLoading] = useState(true); 
+  const product = useSelector((state) => state.product);
 
-    const handleClose = () => {
-        onClose();
-      };
-    
+  useEffect(() => {
+    if (productId) {
+      setIsLoading(true); 
+      dispatch(fetchProductDetail(productId)).finally(() => {
+        setIsLoading(false); 
+      });
+    }
+  }, [productId, dispatch]);
+
+  const handleClose = () => {
+    onClose();
+  };
+
+  if (isLoading) {
+    return <div></div>; 
+  }
+  
   return (
     <div className="modal-overlay">
         <div className="modal-product-detail-content">
             <div className='carousel-container'>
-                <img src={testImage} alt='' className='product-detail-image' />
+                <img src={product.photo || testImage} alt='' className='product-detail-image' />
             </div>
             <div className='product-detail-container'>
-                <span className='product-detail-price'>12000 com</span>
-                <span className='product-detail-likes'><img src={likeIcon} alt='' className='product-detail-like-icon' />Нравится: 1 M</span>
-                <span className='product-detail-name'>Adidas Yeezy 500</span>
-                <p className='product-detail-description'>The Yeezy 500 Blush is a limited edition shoe designed by Kanye West for Adidas</p>
+                <span className='product-detail-price'>$ {parseInt(product.price, 10) || 'Default Price'}</span>
+                <span className='product-detail-likes'><img src={likeIcon} alt='' className='product-detail-like-icon' />Нравится: {product.likes || 0}</span>
+                <span className='product-detail-name'>{product.name || 'Default Name'}</span>
+                <p className='product-detail-description'>{product.shortDescription || 'Default Short Description'}</p>
                 <span className='product-detail-description-title'>Детальное описание</span>
-                <p className='product-detail-description'>It features a unique design, with a chunky silhouette and a blush colorway. The shoe has a mix of suede, mesh and leather, and it's considered a highly sought-after item among shoe enthusiasts.</p>
+                <p className='product-detail-description'>{product.fullDescription || 'Default Full Description'}</p>
                 <button onClick={handleClose} className='product-detail-close-button'>✖</button>
             </div>
         </div>
     </div>
-    );
+  );
 };
 
-export default ItemAddModal;
+export default ItemDetailModal;

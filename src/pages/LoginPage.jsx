@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -51,17 +51,19 @@ function LoginPage() {
     
         setDisableLoginButton(true);  
         setButtonText("Повторите через 10");
-    
+
         let seconds = 10;
+        localStorage.setItem('disableUntil', Date.now() + seconds * 1000); 
         const interval = setInterval(() => {
             seconds--;
             setButtonText(`Повторите через ${seconds}`);
-    
+
             if (seconds <= 0) {
+                localStorage.removeItem('disableUntil');
                 clearInterval(interval);
-                setLoginFailed(false);
-                setDisableLoginButton(false);  
-                setButtonText("Войти");
+                    setLoginFailed(false);
+                    setDisableLoginButton(false);  
+                    setButtonText("Войти");
             }
         }, 1000);
     };
@@ -69,14 +71,24 @@ function LoginPage() {
 
     const isFormInvalid = !inputValues.username || !inputValues.password;
 
-    const onSubmit = async (data) => {
-        const result = await dispatch(loginUser(data));
-        if (result === 'LOGIN_SUCCESSFUL') {
-            navigate('/profile');
-        } else {
-            handleLoginFailure();
-        }
+   const onSubmit = async (data) => {
+    const result = await dispatch(loginUser(data));
+    if (result === 'LOGIN_SUCCESSFUL') {
+        navigate('/profile');
+    } else {
+        handleLoginFailure();
+    }
     };
+
+    useEffect(() => {
+        const disableUntil = localStorage.getItem('disableUntil');
+        if (disableUntil) {
+            const remainingTime = disableUntil - Date.now();
+            if (remainingTime > 0) {
+                handleLoginFailure(); 
+            }
+        }
+    }, []);
     
 
     return (
