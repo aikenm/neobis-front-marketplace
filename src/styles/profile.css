@@ -145,7 +145,6 @@ content {
 .filled-dob {
     color: black;
 }
-  
 
 .number-field-wrapper {
     display: flex;
@@ -192,7 +191,7 @@ content {
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: flex-start;
     margin-top: 50px;
     width: 50vw;
     gap: 20px; 

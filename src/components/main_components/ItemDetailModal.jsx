@@ -1,5 +1,5 @@
 import React from 'react';
-import testImage from '../../images/image 2test.png'
+import testImage from '../../images/product_image_samples/image 2test.png'
 import likeIcon from '../../images/like-icon.svg'
 
 const ItemAddModal = ({ onClose }) => {
