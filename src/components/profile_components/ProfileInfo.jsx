@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import arrow from '../../images/arrow.svg';
 import defaultAvatar from '../../images/avatar.svg';
-import { asyncUpdateUser  } from '../../store/userSlice';
+import { asyncUpdateUser } from '../../store/userSlice';
 import AddNumberModal from '../phone-number_components/AddNumberModal';
 import ConfirmCodeModal from '../phone-number_components/ConfirmCodeModal';
 
