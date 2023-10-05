@@ -479,6 +479,7 @@
     -moz-box-shadow: 0px 3px 7px -5px rgba(0,0,0,0.75);
     cursor: pointer;
     transition: scale 0.3s ease, background-color 0.3s ease;
+    margin-right: 15px;
 }
 
 .temp-product-card:hover {

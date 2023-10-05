@@ -1,18 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ItemAddModal from '../components/main_components/ItemAddModal'; 
 import ItemDetailModal from '../components/main_components/ItemDetailModal'; 
 import defaultAvatar from '../images/avatar.svg';
 import miniLogo from '../images/mini-logo.svg';
-import testImage from '../images/image 2test.png'
-import likeIcon from '../images/like-icon.svg'
+import ProductCard from '../components/product_components/ProductCard';
 
 function MainPage() {
   const [showaddModal, setShowaddModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.user);
   const avatar = useSelector((state) => state.user.avatar);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('https://www.ishak-backender.org.kg/products/product-list/', {
+        headers: {
+          'accept': 'application/json',
+        }
+      });
+
+      console.log(response.data);
+      setProducts(response.data);
+    } catch (error) {
+      console.error('An error occurred while fetching data: ', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   const handleProductClick = () => {
     setShowDetailModal(true);  
@@ -39,14 +59,9 @@ function MainPage() {
         </Link>
       </div>
       <div className='items-section'>
-        <div onClick={handleProductClick} className='temp-product-card'>
-            <img src={testImage} alt='' className='product-card-image' />
-            <span className='product-card-name'>Adidas Yeezy 500</span>
-            <span className='product-card-price'>23 000 $</span>
-            <div className='product-card-like-wrapper'>
-                <button className='product-card-like-button'><img src={likeIcon} alt='' className='product-card-like-icon' /></button><span className='product-card-likes'>100</span>
-            </div>
-        </div>
+        {products.map((product, index) => (
+          <ProductCard key={index} product={product} handleProductClick={handleProductClick} />
+        ))}
       </div>
 
       {showaddModal && <ItemAddModal onClose={() => setShowaddModal(false)} />}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { setProductField, setProductImages, clearProduct } from '../../store/productSlice';
+import { setProductField, setProductPhoto, clearProduct, createProduct } from '../../store/productSlice';
 import addItemIcon from '../../images/add-item.svg'
 
 const ItemAddModal = ({ onClose }) => {
@@ -9,15 +9,32 @@ const ItemAddModal = ({ onClose }) => {
     const [isFormValid, setFormValid] = useState(false);
     const dispatch = useDispatch();
     const product = useSelector((state) => state.product);
+    const [localFiles, setLocalFiles] = useState([]);
 
-  const onSubmit = (data) => {
-    console.log('Submitting:', data);
+const handleImageChange = (e) => {
+  const files = Array.from(e.target.files);
+  
+  const fileMetadata = files.map((file, index) => ({
+    id: index,
+    name: file.name,
+    size: file.size,
+  }));
+  
+  setLocalFiles(files);
+  dispatch(setProductPhoto(fileMetadata));
+};
+
+const onSubmit = (data) => {
+    // When submitting the form, use `localFiles` to actually upload the files.
+    const productWithFiles = {
+      ...product,
+      photo: localFiles,
+    };
+    dispatch(createProduct(productWithFiles));
   };
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    dispatch(setProductImages(files));
-  };
+    
+      
 
   const handleClose = () => {
     onClose();
@@ -45,14 +62,14 @@ const ItemAddModal = ({ onClose }) => {
                         <img src={addItemIcon} alt="Default" className="file-image" />
                     </label>
                     <div className="selected-images-wrapper">
-                        {product.images.map((image, index) => (
-                            <img 
+                    {localFiles.map((photo, index) => (
+                        <img 
                             key={index} 
-                            src={URL.createObjectURL(image)} 
+                            src={URL.createObjectURL(photo)} 
                             alt={`Selected ${index}`} 
                             className="selected-image"
-                            />
-                        ))}
+                        />
+                    ))}
                     </div>
                 </div>
             
