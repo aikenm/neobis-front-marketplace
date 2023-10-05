@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchProductDetail } from '../../store/productSlice';
+import { fetchProductDetail, clearProduct } from '../../store/productSlice';
 import testImage from '../../images/product_image_samples/image 2test.png';
 import likeIcon from '../../images/like-icon.svg';
 
@@ -21,7 +21,8 @@ const ItemDetailModal = ({ onClose, productId }) => {
 
   const handleClose = () => {
     onClose();
-  };
+    dispatch(clearProduct());
+};
 
   if (isLoading) {
     return <div></div>; 

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ItemAddModal from '../components/main_components/ItemAddModal'; 
 import ItemDetailModal from '../components/main_components/ItemDetailModal'; 
 import defaultAvatar from '../images/avatar.svg';
 import miniLogo from '../images/mini-logo.svg';
 import ProductCard from '../components/product_components/ProductCard';
+import { resetCreateProductStatus } from '../store/productSlice';
 
 function MainPage() {
   const [showaddModal, setShowaddModal] = useState(false);
@@ -16,6 +17,8 @@ function MainPage() {
   const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.user);
   const avatar = useSelector((state) => state.user.avatar);
+
+  const dispatch = useDispatch();
 
   const fetchProducts = async () => {
     try {
@@ -37,6 +40,11 @@ function MainPage() {
     setShowDetailModal(true);
   };
 
+  const handleCreateProductClick = () => {
+    dispatch(resetCreateProductStatus());
+    setShowaddModal(true);
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -49,9 +57,9 @@ function MainPage() {
           <span className='header-logo-text'>MOBI MARKET</span>
         </div>
         <button 
-          className='form-button add-item-button'
-          onClick={() => setShowaddModal(true)}>
-            Подать объявление
+            className='form-button add-item-button'
+            onClick={handleCreateProductClick}>
+                Подать объявление
         </button>
         <Link to="/profile" className='main-profile-button'>
           <div className='profile-info'>

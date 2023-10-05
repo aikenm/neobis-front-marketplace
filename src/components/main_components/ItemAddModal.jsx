@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { setProductField, setProductPhoto, clearProduct, createProduct } from '../../store/productSlice';
+import { setProductField, setProductPhoto, clearProduct, createProduct, resetCreateProductStatus } from '../../store/productSlice';
 import addItemIcon from '../../images/add-item.svg'
 
 const ItemAddModal = ({ onClose }) => {
@@ -39,6 +39,7 @@ const ItemAddModal = ({ onClose }) => {
         onClose();
         reset(); 
         dispatch(clearProduct()); 
+        dispatch(resetCreateProductStatus());  
     }, [onClose, reset, dispatch]);
 
     useEffect(() => {

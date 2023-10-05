@@ -50,16 +50,10 @@ export const createProduct = createAsyncThunk(
 export const fetchProductDetail = createAsyncThunk(
   'product/fetchProductDetail',
   async (id, { rejectWithValue }) => {
-
-    const token = localStorage.getItem('access_token'); 
-    if (!token) {
-        return rejectWithValue('No access token found');
-    }
     try {
-      const response = await axios.get(`https://www.ishak-backender.org.kg/products/product/api/${id}/`, {
+      const response = await axios.get(`https://www.ishak-backender.org.kg/products/product-list/${id}/`, {
         headers: {
           'accept': 'application/json',
-          'Authorization': `Bearer ${token}` 
         },
       });
       return response.data;
@@ -86,7 +80,10 @@ const productSlice = createSlice({
         state.shortDescription = '';
         state.fullDescription = '';
         state.photo = [];
-      }
+    },
+    resetCreateProductStatus: (state) => {
+        state.createProductStatus = 'idle';
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -120,6 +117,6 @@ const productSlice = createSlice({
   },
 });
 
-export const { setProductField, setProductPhoto, clearProduct } = productSlice.actions;
+export const { setProductField, setProductPhoto, clearProduct, resetCreateProductStatus } = productSlice.actions;
 
 export default productSlice.reducer;

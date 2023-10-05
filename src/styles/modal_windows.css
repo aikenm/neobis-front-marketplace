@@ -167,8 +167,8 @@
 .add-number-close-button {
   position: absolute;
   top: 23%;
-  left: 35%;
-  font-size: 24px;
+  margin-left: 230px;
+  font-size: 23px;
   background: none;
   border: none;
   cursor: pointer;
@@ -370,8 +370,8 @@
 .add-product-close-button {
   position: absolute;
   top: 25%;
-  left: 64%;
-  font-size: 20px;
+  margin-left: 90px;
+  font-size: 23px;
   background: none;
   border: none;
   cursor: pointer;

@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import arrow from '../../images/arrow.svg';
 import ProductCard from '../product_components/ProductCard'; 
+import ItemDetailModal from '../main_components/ItemDetailModal';  // Import the Detail Modal
 
 function UserItems() {
   const [products, setProducts] = useState([]);
+  const [showDetailModal, setShowDetailModal] = useState(false); // New State
+  const [selectedProductId, setSelectedProductId] = useState(null); // New State
   
   useEffect(() => {
     const fetchProducts = async () => {
@@ -28,8 +31,9 @@ function UserItems() {
     fetchProducts();
   }, []);
 
-  const handleProductClick = (product) => {
-    
+  const handleProductClick = (id) => {
+    setSelectedProductId(id);  // Set the selected Product ID
+    setShowDetailModal(true);  // Open the Modal
   };
 
     return (
@@ -43,9 +47,10 @@ function UserItems() {
             </div>
             <div className='user-items-content-section'>
             {products.map((product, index) => (
-                <ProductCard key={index} product={product} handleProductClick={() => handleProductClick(product)} />
+                <ProductCard key={index} product={product} handleProductClick={() => handleProductClick(product.id)} />
             ))}
             </div>
+            {showDetailModal && <ItemDetailModal productId={selectedProductId} onClose={() => setShowDetailModal(false)} />} {/* New Line */}
         </div>
     );
 }
