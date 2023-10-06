@@ -45,6 +45,20 @@ function ProductCard({ product, handleProductClick, showMoreButton }) {
     setShowExtraButtons(!showExtraButtons);
   };
 
+  const handleEditClick = (event) => {
+    event.stopPropagation();
+  };
+  
+  const handleDeleteClick = (event) => {
+    event.stopPropagation();
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      setShowExtraButtons(false);
+    }, 200);
+  };
+
   return (
     <div onClick={() => handleProductClick(product.id)} className='product-card'>
       <img src={product.photo || testImage} alt='' className='product-card-image' />
@@ -56,15 +70,21 @@ function ProductCard({ product, handleProductClick, showMoreButton }) {
         </button>
         <span className='product-card-likes'>{likesCount || 0}</span>
         {showMoreButton && (
-          <>
-            <button className='product-card-more-button' onClick={handleMoreClick}><img src={moreIcon} alt='' className='product-card-more-button' /></button>
+          <div onBlur={handleBlur} className='product-card-more-wrapper'>
+            <button className='product-card-more-button' onClick={handleMoreClick}>
+                <img src={moreIcon} alt='' className='product-card-more-button' />
+            </button>
             {showExtraButtons && (
               <div className="extra-buttons">
-                <button className='product-card-edit-button'><img src={editIcon} alt='' className='more-icons' />Изменить</button>
-                <button className='product-card-delete-button'><img src={deleteIcon} alt='' className='more-icons' />Удалить</button>
+                <button className='product-card-edit-button' onClick={handleEditClick}>
+                    <img src={editIcon} alt='' className='more-icons' />Изменить
+                </button>
+                <button className='product-card-delete-button' onClick={handleDeleteClick}>
+                    <img src={deleteIcon} alt='' className='more-icons' />Удалить
+                </button>
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

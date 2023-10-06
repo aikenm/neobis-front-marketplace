@@ -79,8 +79,11 @@
     margin-left: 5px;
 }
 
-.product-card-more-button {
+.product-card-more-wrapper {
     margin-left: auto;
+}
+
+.product-card-more-button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -99,10 +102,9 @@
     display: flex;
     flex-direction: column;
     position: absolute;
-    margin-left: 130px;
-    margin-top: 70px;
     background-color: #fff;
     border-radius: 12px;
+    margin-top: -25px;
     padding: 5px;
     box-shadow: 0px 8px 15px -1px rgba(199,199,199,0.54);
     -webkit-box-shadow: 0px 8px 15px -1px rgba(199,199,199,0.54);
