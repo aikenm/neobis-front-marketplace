@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { likeProduct, unlikeProduct } from '../../store/productSlice';  
+import { likeProduct, unlikeProduct, deleteProduct } from '../../store/productSlice';  
 import likeIcon from '../../images/like-icon.svg';
 import notLikedIcon from '../../images/not-liked-icon.svg';
 import testImage from '../../images/product_image_samples/image 2test.png';
 import moreIcon from '../../images/drop-down.svg';
 import editIcon from '../../images/edit-icon.svg';
 import deleteIcon from '../../images/delete-small-icon.svg';
+import ProductDeleteModal from './ProductDeleteModal';
 
 function ProductCard({ product, handleProductClick, showMoreButton }) {
   const [isLiked, setIsLiked] = useState(false); 
   const [showExtraButtons, setShowExtraButtons] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const dispatch = useDispatch();
   const likesCount = useSelector((state) => state.product.likesCount);
   const createProductStatus = useSelector((state) => state.product.createProductStatus);
@@ -51,6 +54,25 @@ function ProductCard({ product, handleProductClick, showMoreButton }) {
   
   const handleDeleteClick = (event) => {
     event.stopPropagation();
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = (event) => {
+    if (event) event.stopPropagation();
+    setShowDeleteModal(false); 
+  
+    dispatch(deleteProduct(product.id))
+      .then((response) => {
+        console.log('Product successfully deleted', response);
+      })
+      .catch((error) => {
+        console.error('Failed to delete product', error);
+      });
+  };
+
+  const handleDeleteCancel = (event) => {
+    if (event) event.stopPropagation();
+  setShowDeleteModal(false); 
   };
 
   const handleBlur = () => {
@@ -87,6 +109,11 @@ function ProductCard({ product, handleProductClick, showMoreButton }) {
           </div>
         )}
       </div>
+      <ProductDeleteModal 
+        show={showDeleteModal} 
+        onConfirm={handleDeleteConfirm} 
+        onCancel={handleDeleteCancel} 
+      />
     </div>
   );
 }

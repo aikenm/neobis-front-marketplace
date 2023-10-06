@@ -117,6 +117,25 @@ export const likeProduct = createAsyncThunk(
       }
     }
   );
+
+  export const deleteProduct = createAsyncThunk(
+    'product/deleteProduct',
+    async (id, { rejectWithValue }) => {
+      const token = localStorage.getItem('access_token'); 
+      const headers = {
+        'accept': 'application/json',
+        'Authorization': `Bearer ${token}`
+    };
+  
+      try {
+        const response = await axios.delete(`https://www.ishak-backender.org.kg/products/product/api/${id}/`, { headers });
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response.data);
+      }
+    }
+  );
+  
   
 
 const productSlice = createSlice({
@@ -195,6 +214,13 @@ const productSlice = createSlice({
       })
       .addCase(fetchLikesCount.rejected, (state, action) => {
         console.error('Error fetching likes count:', action.error);
+      })
+
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        console.log('Product deleted:', action.payload);
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        console.error('Error deleting product:', action.error);
       });
   },
 });
