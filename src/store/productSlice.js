@@ -9,7 +9,8 @@ const initialState = {
     available: true,
     fullDescription: '',
     photo: [],
-    createProductStatus: 'idle'
+    createProductStatus: 'idle',
+    likesCount: null, 
 };
 
 export const createProduct = createAsyncThunk(
@@ -63,6 +64,61 @@ export const fetchProductDetail = createAsyncThunk(
   }
 );
 
+export const likeProduct = createAsyncThunk(
+    'product/likeProduct',
+    async (id, { rejectWithValue }) => {
+      const token = localStorage.getItem('access_token');
+      const headers = {
+        'accept': 'application/json',
+        'Authorization': `Bearer ${token}`
+        };
+  
+      try {
+        const response = await axios.post(`https://www.ishak-backender.org.kg/products/like/${id}/`, {}, { headers });
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response.data);
+      }
+    }
+  );
+  
+  export const unlikeProduct = createAsyncThunk(
+    'product/unlikeProduct',
+    async (productId, { rejectWithValue }) => {
+      const token = localStorage.getItem('access_token');
+      const headers = {
+        'accept': 'application/json',
+        'Authorization': `Bearer ${token}`
+      };
+  
+      try {
+        const response = await axios.delete(`https://www.ishak-backender.org.kg/products/unlike/${productId}/`, { headers });
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response.data);
+      }
+    }
+  );
+
+  export const fetchLikesCount = createAsyncThunk(
+    'product/fetchLikesCount',
+    async (id, { rejectWithValue }) => {
+      const token = localStorage.getItem('access_token');
+      const headers = {
+        'accept': 'application/json',
+        'Authorization': `Bearer ${token}`
+      };
+  
+      try {
+        const response = await axios.get(`https://www.ishak-backender.org.kg/products/like-counts/${id}/`, { headers });
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response.data);
+      }
+    }
+  );
+  
+
 const productSlice = createSlice({
   name: 'product',
   initialState,
@@ -83,7 +139,8 @@ const productSlice = createSlice({
     },
     resetCreateProductStatus: (state) => {
         state.createProductStatus = 'idle';
-    }
+    },
+    
   },
   extraReducers: (builder) => {
     builder
@@ -99,6 +156,8 @@ const productSlice = createSlice({
         state.createProductStatus = 'failed';  
         console.error('Product creation failed:', action.error);
       })
+
+
       .addCase(fetchProductDetail.pending, (state) => {
         state.createProductStatus = 'loading';
       })
@@ -113,6 +172,29 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductDetail.rejected, (state, action) => {
         state.createProductStatus = 'failed';
+      })
+
+
+      .addCase(likeProduct.fulfilled, (state, action) => {
+        console.log('Product liked:', action.payload);
+      })
+      .addCase(likeProduct.rejected, (state, action) => {
+        console.error('Error liking product:', action.error);
+      })
+      .addCase(unlikeProduct.fulfilled, (state, action) => {
+        console.log('Product unliked:', action.payload);
+      })
+      .addCase(unlikeProduct.rejected, (state, action) => {
+        console.error('Error unliking product:', action.error);
+      })
+
+
+      .addCase(fetchLikesCount.fulfilled, (state, action) => {
+        state.likesCount = action.payload;  
+        console.log('Likes count fetched:', action.payload);
+      })
+      .addCase(fetchLikesCount.rejected, (state, action) => {
+        console.error('Error fetching likes count:', action.error);
       });
   },
 });

@@ -6,7 +6,7 @@ import addNumberIcon from '../../images/add-number.svg'
 
 function AddNumberModal({ onClose, onNext }) {
 
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit, watch, reset } = useForm();
   const phone_number = watch('phone_number', '');
   const dispatch = useDispatch();
 
@@ -16,6 +16,11 @@ function AddNumberModal({ onClose, onNext }) {
       onNext(data);
     }
   };
+
+  const handleClose = () => { 
+    reset();  
+    onClose();
+  }
 
   return (
     <div className="modal-number-overlay">
@@ -29,7 +34,7 @@ function AddNumberModal({ onClose, onNext }) {
             <input type="text" {...register('phone_number')} placeholder="0(000)000 000" className='number-modal-input'/>
             <button type="submit" disabled={!phone_number} className='number-modal-button'>Далее</button>
           </form>
-          <button onClick={onClose} className='add-number-close-button'>✖</button>
+          <button onClick={handleClose} className='add-number-close-button'>✖</button>
         </div>
       </div>
     </div>
