@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import ItemAddModal from '../components/main_components/ItemAddModal'; 
-import ItemDetailModal from '../components/main_components/ItemDetailModal'; 
+import ItemAddModal from '../components/main_components/ItemAddModal';
+import ItemDetailModal from '../components/main_components/ItemDetailModal';
 import defaultAvatar from '../images/avatar.svg';
 import miniLogo from '../images/mini-logo.svg';
 import ProductCard from '../components/product_components/ProductCard';
-import { resetCreateProductStatus } from '../store/productSlice';
+import { resetCreateProductStatus, fetchLikesCount } from '../store/productSlice';
 
 function MainPage() {
-  const [showaddModal, setShowaddModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
 
@@ -20,20 +20,30 @@ function MainPage() {
 
   const dispatch = useDispatch();
 
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get('https://www.ishak-backender.org.kg/products/product-list/', {
-        headers: {
-          'accept': 'application/json',
-        }
-      });
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('https://www.ishak-backender.org.kg/products/product-list/', {
+          headers: {
+            'accept': 'application/json',
+          }
+        });
+        const fetchedProducts = response.data;
 
-      console.log(response.data);
-      setProducts(response.data);
-    } catch (error) {
-      console.error('An error occurred while fetching data: ', error);
-    }
-  };
+        for (const product of fetchedProducts) {
+          const likesCountData = await dispatch(fetchLikesCount(product.id)).unwrap(); 
+          product.likesCount = likesCountData;
+        }
+
+        setProducts(fetchedProducts);
+
+      } catch (error) {
+        console.error('An error occurred while fetching data: ', error);
+      }
+    };
+    
+    fetchProducts();
+  }, [dispatch]);
 
   const handleProductClick = (id) => {
     setSelectedProductId(id);
@@ -42,12 +52,8 @@ function MainPage() {
 
   const handleCreateProductClick = () => {
     dispatch(resetCreateProductStatus());
-    setShowaddModal(true);
+    setShowAddModal(true);
   };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   return (
     <div className='main-page'>
@@ -71,11 +77,15 @@ function MainPage() {
       </div>
       <div className='items-section'>
         {products.map((product, index) => (
-          <ProductCard key={index} product={product} handleProductClick={handleProductClick} />
+          <ProductCard 
+            key={index} 
+            product={product} 
+            handleProductClick={handleProductClick}
+          />
         ))}
       </div>
 
-      {showaddModal && <ItemAddModal onClose={() => setShowaddModal(false)} />}
+      {showAddModal && <ItemAddModal onClose={() => setShowAddModal(false)} />}
       {showDetailModal && <ItemDetailModal productId={selectedProductId} onClose={() => setShowDetailModal(false)} />}
     </div>
   );

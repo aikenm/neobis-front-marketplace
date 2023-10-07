@@ -83,7 +83,7 @@ const ItemAddModal = ({ onClose }) => {
                         {...register('price', { required: true })}
                         onChange={(e) => dispatch(setProductField({ field: 'price', value: e.target.value }))}
                         value={product.price}
-                        className='add-product-input'
+                        className='product-input'
                         placeholder='Цена'
                     />
 
@@ -91,7 +91,7 @@ const ItemAddModal = ({ onClose }) => {
                         {...register('name', { required: true })}
                         onChange={(e) => dispatch(setProductField({ field: 'name', value: e.target.value }))}
                         value={product.name}
-                        className='add-product-input'
+                        className='product-input'
                         placeholder='Название'
                     />
                     
@@ -99,7 +99,7 @@ const ItemAddModal = ({ onClose }) => {
                         {...register('shortDescription', { required: true })}
                         onChange={(e) => dispatch(setProductField({ field: 'shortDescription', value: e.target.value }))}
                         value={product.shortDescription}
-                        className='add-product-input'
+                        className='product-input'
                         placeholder='Краткое описание'
                     />
                     
@@ -107,11 +107,11 @@ const ItemAddModal = ({ onClose }) => {
                         {...register('fullDescription', { required: true })}
                         onChange={(e) => dispatch(setProductField({ field: 'fullDescription', value: e.target.value }))}
                         value={product.fullDescription}
-                        className='add-product-input'
+                        className='product-input'
                         placeholder='Полное описание'
                     />
-                    <button type="submit" disabled={!isFormValid} className='add-product-button'>Добавить</button>
-                    <button onClick={handleClose} className='add-product-close-button'>✖</button>
+                    <button type="submit" disabled={!isFormValid} className='product-button'>Добавить</button>
+                    <button onClick={handleClose} className='product-close-button'>✖</button>
                 </form>
             </div>
         </div>

@@ -32,17 +32,17 @@ const ItemDetailModal = ({ onClose, productId }) => {
 
   return (
     <div className="modal-overlay">
-        <div className="modal-product-detail-content">
+        <div className="modal-product-content">
             <div className='carousel-container'>
-                <img src={product.photo || testImage} alt='' className='product-detail-image' />
+                <img src={product.photo || testImage} alt='' className='product-image' />
             </div>
-            <div className='product-detail-container'>
-                <span className='product-detail-price'>$ {parseInt(product.price, 10) || 'Default Price'}</span>
-                <span className='product-detail-likes'><img src={likeIcon} alt='' className='product-detail-like-icon' />Нравится: {likesCount || 0}</span>
-                <span className='product-detail-name'>{product.name || 'Default Name'}</span>
-                <p className='product-detail-description'>{product.shortDescription || 'Default Short Description'}</p>
-                <span className='product-detail-description-title'>Детальное описание</span>
-                <p className='product-detail-description'>{product.fullDescription || 'Default Full Description'}</p>
+            <div className='product-container'>
+                <span className='product-price'>$ {parseInt(product.price, 10) || 'Default Price'}</span>
+                <span className='product-likes'><img src={likeIcon} alt='' className='product-like-icon' />Нравится: {likesCount || 0}</span>
+                <span className='product-name'>{product.name || 'Default Name'}</span>
+                <p className='product-description'>{product.shortDescription || 'Default Short Description'}</p>
+                <span className='product-description-title'>Детальное описание</span>
+                <p className='product-description'>{product.fullDescription || 'Default Full Description'}</p>
                 <button onClick={handleClose} className='product-detail-close-button'>✖</button>
             </div>
         </div>

@@ -8,40 +8,51 @@ import moreIcon from '../../images/drop-down.svg';
 import editIcon from '../../images/edit-icon.svg';
 import deleteIcon from '../../images/delete-small-icon.svg';
 import ProductDeleteModal from './ProductDeleteModal';
+import ProductEditModal from './ProductEditModal';
 
-function ProductCard({ product, handleProductClick, showMoreButton }) {
-  const [isLiked, setIsLiked] = useState(false); 
+function ProductCard({ product, handleProductClick, showMoreButton, onUpdate }) {
+  const dispatch = useDispatch();
+
+  const isLiked = useSelector((state) => state.product.likedProducts[product.id] || false);
   const [showExtraButtons, setShowExtraButtons] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const dispatch = useDispatch();
-  const likesCount = useSelector((state) => state.product.likesCount);
-  const createProductStatus = useSelector((state) => state.product.createProductStatus);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [localLikesCount, setLocalLikesCount] = useState(product.likesCount || 0);
 
   const toggleLike = async (event) => {
-    event.stopPropagation();  
-    setIsLiked(!isLiked);
+    event.stopPropagation();
 
-    if (!isLiked) {
-      try {
-        await dispatch(likeProduct(product.id));
-        console.log('Successfully liked product');
-      } catch (error) {
-        console.error('Failed to like product', error);
-      }
+    if (isLiked) {
+        try {
+            await dispatch(unlikeProduct(product.id));
+            console.log('Successfully unliked product');
+            setIsLiked(false);
+            setLocalLikesCount(localLikesCount - 1);
+        } catch (error) {
+            console.error('Failed to unlike product', error);
+        }
     } else {
-      try {
-        await dispatch(unlikeProduct(product.id));
-        console.log('Successfully unliked product');
-      } catch (error) {
-        console.error('Failed to unlike product', error);
-      }
+        try {
+            const response = await dispatch(likeProduct(product.id));
+            
+            if (response.payload && response.payload.message !== "Product already liked") {
+                console.log('Successfully liked product');
+                setIsLiked(true);
+                setLocalLikesCount(localLikesCount + 1);
+            } else {
+                console.warn(response.payload.message);
+            }
+        } catch (error) {
+            console.error('Failed to like product', error);
+        }
     }
+};
 
-    if (createProductStatus === 'fulfilled') {
-      setIsLiked(likesCount > 0);
-    }
-  };
+
+
+
+
+
 
   const handleMoreClick = (event) => {
     event.stopPropagation();  
@@ -50,6 +61,7 @@ function ProductCard({ product, handleProductClick, showMoreButton }) {
 
   const handleEditClick = (event) => {
     event.stopPropagation();
+    setShowEditModal(true);
   };
   
   const handleDeleteClick = (event) => {
@@ -81,6 +93,14 @@ function ProductCard({ product, handleProductClick, showMoreButton }) {
     }, 200);
   };
 
+  const handleUpdate = () => {
+    if (onUpdate) {
+      onUpdate();
+    }
+    setShowEditModal(false);
+  };
+  
+
   return (
     <div onClick={() => handleProductClick(product.id)} className='product-card'>
       <img src={product.photo || testImage} alt='' className='product-card-image' />
@@ -90,7 +110,7 @@ function ProductCard({ product, handleProductClick, showMoreButton }) {
         <button className='product-card-like-button' onClick={toggleLike}>
           <img src={isLiked ? likeIcon : notLikedIcon} alt='' className='product-card-like-icon' />
         </button>
-        <span className='product-card-likes'>{likesCount || 0}</span>
+        <span className='product-card-likes'>{localLikesCount || 0}</span>
         {showMoreButton && (
           <div onBlur={handleBlur} className='product-card-more-wrapper'>
             <button className='product-card-more-button' onClick={handleMoreClick}>
@@ -114,6 +134,8 @@ function ProductCard({ product, handleProductClick, showMoreButton }) {
         onConfirm={handleDeleteConfirm} 
         onCancel={handleDeleteCancel} 
       />
+      {showEditModal && <ProductEditModal productId={product.id} onClose={handleUpdate} />}
+
     </div>
   );
 }

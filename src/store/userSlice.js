@@ -35,6 +35,7 @@ const userSlice = createSlice({
         logoutUser: (state) => {
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
+            localStorage.removeItem('likedProducts');
             state.loginStatus = false;
             Object.assign(state, initialState);
         }

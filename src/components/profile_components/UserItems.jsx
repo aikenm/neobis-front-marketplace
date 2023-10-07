@@ -10,24 +10,24 @@ function UserItems() {
   const [showDetailModal, setShowDetailModal] = useState(false); 
   const [selectedProductId, setSelectedProductId] = useState(null); 
   
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const token = localStorage.getItem('access_token'); 
-      const config = {
-        headers: {
-          'accept': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      };
-      
-      try {
-        const response = await axios.get('https://www.ishak-backender.org.kg/products/product/api/', config);
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
+  const fetchProducts = async () => {
+    const token = localStorage.getItem('access_token'); 
+    const config = {
+      headers: {
+        'accept': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     };
     
+    try {
+      const response = await axios.get('https://www.ishak-backender.org.kg/products/product/api/', config);
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchProducts();
   }, []);
 
@@ -52,6 +52,7 @@ function UserItems() {
                     product={product} 
                     handleProductClick={() => handleProductClick(product.id)} 
                     showMoreButton={true}
+                    onUpdate={fetchProducts} 
                 />
             ))}
             </div>
