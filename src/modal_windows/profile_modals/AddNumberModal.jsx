@@ -34,7 +34,7 @@ function AddNumberModal({ onClose, onNext }) {
             <input type="text" {...register('phone_number')} placeholder="0(000)000 000" className='number-modal-input'/>
             <button type="submit" disabled={!phone_number} className='number-modal-button'>Далее</button>
           </form>
-          <button onClick={handleClose} className='add-number-close-button'>✖</button>
+          <button onClick={handleClose} className='close-button'>✖</button>
         </div>
       </div>
     </div>

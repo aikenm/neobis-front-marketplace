@@ -17,27 +17,34 @@ function MainPage() {
   const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.user);
   const avatar = useSelector((state) => state.user.avatar);
+  const createProductStatus = useSelector((state) => state.product.createProductStatus); // Listen for product creation status
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get('https://www.ishak-backender.org.kg/products/product-list/', {
-          headers: {
-            'accept': 'application/json',
-          }
-        });
-        const fetchedProducts = response.data;
-        setProducts(fetchedProducts);
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('https://www.ishak-backender.org.kg/products/product-list/', {
+        headers: {
+          'accept': 'application/json',
+        }
+      });
+      const fetchedProducts = response.data;
+      setProducts(fetchedProducts);
+    } catch (error) {
+      console.error('An error occurred while fetching data: ', error);
+    }
+  };
 
-      } catch (error) {
-        console.error('An error occurred while fetching data: ', error);
-      }
-    };
-    
+  useEffect(() => {
     fetchProducts();
   }, [dispatch]);
+
+  // Add this useEffect to re-fetch products when a new one is added successfully
+  useEffect(() => {
+    if (createProductStatus === 'fulfilled') {
+      fetchProducts();
+    }
+  }, [createProductStatus, dispatch]);
 
   const handleProductClick = (id) => {
     setSelectedProductId(id);

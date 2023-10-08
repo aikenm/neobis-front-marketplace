@@ -35,6 +35,10 @@ function UserItems({ handleBack }) {
     setShowDetailModal(true);  
   };
 
+  const handleProductDeleted = (deletedProductId) => {
+    setProducts(prevProducts => prevProducts.filter(product => product.id !== deletedProductId));
+  }
+
     return (
         <div className='content'>
             <div className='content-header'>
@@ -52,6 +56,7 @@ function UserItems({ handleBack }) {
                     handleProductClick={() => handleProductClick(product.id)} 
                     showMoreButton={true}
                     onUpdate={fetchProducts} 
+                    onProductDeleted={handleProductDeleted}
                 />
             ))}
             </div>

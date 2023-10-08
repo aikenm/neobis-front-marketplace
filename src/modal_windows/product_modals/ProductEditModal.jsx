@@ -29,7 +29,7 @@ const ProductEditModal = ({ onClose, productId, onUpdate }) => {
             'accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`          
-            }
+          }
         }
       );
       console.log('Successfully updated product:', response.data);

@@ -10,7 +10,7 @@ import deleteIcon from '../images/delete-small-icon.svg';
 import ProductDeleteModal from '../modal_windows/product_modals/ProductDeleteModal';
 import ProductEditModal from '../modal_windows/product_modals/ProductEditModal';
 
-function ProductCard({ product, handleProductClick, showMoreButton, onUpdate }) {
+function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, onProductDeleted }) {
   const dispatch = useDispatch();
 
   const [isLiked, setIsLiked] = useState(() => {
@@ -38,7 +38,7 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate }) 
             if (unlikedResponse && unlikedResponse.payload) {
                 console.log('Successfully unliked product');
                 setIsLiked(false);
-                localStorage.setItem(`product_liked_${product.id}`, 'false'); // Update local storage
+                localStorage.setItem(`product_liked_${product.id}`, 'false'); 
                 setLocalLikesCount(localLikesCount - 1);
             } else {
                 console.warn("Unexpected response structure or missing payload for unliking.");
@@ -53,7 +53,7 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate }) 
             if (likedResponse && likedResponse.payload) {
                 console.log('Successfully liked product');
                 setIsLiked(true);
-                localStorage.setItem(`product_liked_${product.id}`, 'true'); // Update local storage
+                localStorage.setItem(`product_liked_${product.id}`, 'true');
                 setLocalLikesCount(localLikesCount + 1);
             } else {
                 console.warn("Unexpected response structure or missing payload for liking.");
@@ -63,8 +63,6 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate }) 
         }
     }
   };
-
-
 
   const handleMoreClick = (event) => {
     event.stopPropagation();  
@@ -88,6 +86,9 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate }) 
     dispatch(deleteProduct(product.id))
       .then((response) => {
         console.log('Product successfully deleted', response);
+        if (onProductDeleted) {
+          onProductDeleted(product.id); // Notify parent component of product deletion
+        }
       })
       .catch((error) => {
         console.error('Failed to delete product', error);
