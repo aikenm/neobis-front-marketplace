@@ -35,7 +35,6 @@ const userSlice = createSlice({
         logoutUser: (state) => {
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
-            localStorage.removeItem('activeComponent'); 
 
             for (let key in localStorage) {
                 if (key.startsWith('product_liked_')) {
