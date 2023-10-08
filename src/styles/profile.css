@@ -24,6 +24,8 @@ content {
 
 .profile-back-button {
     display: flex;
+    background: none;
+    border: none;
     position: absolute;
     left: 46%;
     text-decoration: none;

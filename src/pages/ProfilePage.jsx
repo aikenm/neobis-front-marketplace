@@ -15,8 +15,7 @@ import defaultAvatar from '../images/avatar.svg';
 
 function ProfilePage() {
     const [showLogoutModal, setShowLogoutModal] = useState(false);
-    const initialActiveComponent = localStorage.getItem('activeComponent') || 'profile';
-    const [activeComponent, setActiveComponent] = useState(initialActiveComponent);
+    const [activeComponent, setActiveComponent] = useState('profile');
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -26,6 +25,7 @@ function ProfilePage() {
 
     const [navigationStack, setNavigationStack] = useState(['profile']);
     const navigationSet = new Set(navigationStack);
+
     
     const handleSetActiveComponent = (newComponent) => {
         setActiveComponent(newComponent);
@@ -42,7 +42,7 @@ function ProfilePage() {
     const handleBackButton = () => {
         if (navigationStack.length > 1) {
             const updatedStack = [...navigationStack];
-        
+    
             if (updatedStack[updatedStack.length - 1] !== activeComponent) {
                 const newStack = updatedStack.filter(comp => comp !== activeComponent);
                 setActiveComponent(newStack[newStack.length - 1]);
@@ -52,13 +52,10 @@ function ProfilePage() {
                 setActiveComponent(updatedStack[updatedStack.length - 1]);
                 setNavigationStack(updatedStack);
             }
-    
-            localStorage.setItem('activeComponent', updatedStack[updatedStack.length - 1]);
         } else {
             navigate('/main');
         }
-    };
-      
+    };    
 
     const handleLogoutConfirm = () => {
         dispatch(resetSteps());

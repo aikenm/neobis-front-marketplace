@@ -8,7 +8,7 @@ import { asyncUpdateUser } from '../../store/userSlice';
 import AddNumberModal from '../../modal_windows/profile_modals/AddNumberModal';
 import ConfirmCodeModal from '../../modal_windows/profile_modals/ConfirmCodeModal';
 
-function ProfileInfo({ handleBack }) {
+function ProfileInfo() {
     const user = useSelector(state => state.user);
     const avatar = useSelector(state => state.user.avatar);
     const dispatch = useDispatch();
@@ -42,7 +42,6 @@ function ProfileInfo({ handleBack }) {
             reader.readAsDataURL(event.target.files[0]);
         }
     };
-    
     
     const handleAddNumber = () => {
         setShowNumberModal(true);  
@@ -80,7 +79,10 @@ function ProfileInfo({ handleBack }) {
     return (
         <div className='content'>
             <div className='content-header'>
-                <Link to='/main' className='profile-back-button'>
+                <Link 
+                    to='/main' 
+                    className='profile-back-button'
+                >
                     <img src={arrow} alt="back" className='arrow-icon'/>
                     <span className='arrow-text'>Назад</span>
                 </Link>
