@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setProductField, setProductPhoto, clearProduct, createProduct, resetCreateProductStatus } from '../../store/productSlice';
 import addItemIcon from '../../images/add-item.svg'
 
-const ItemAddModal = ({ onClose }) => {
+const ProductAddModal = ({ onClose }) => {
     const { register, handleSubmit, reset } = useForm();
     const [isFormValid, setFormValid] = useState(false);
     const dispatch = useDispatch();
@@ -118,4 +118,4 @@ const ItemAddModal = ({ onClose }) => {
     );
 };
 
-export default ItemAddModal;
+export default ProductAddModal;

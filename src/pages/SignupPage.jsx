@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setEmail, setUsername, setPassword, nextStep, prevStep, registerUser, resetUserExists } from '../store/signupSlice';
 import logo from '../images/logo.svg';
-import SignupUser from '../components/signup_components/SignupUser';
-import SignupPassword from '../components/signup_components/SignupPassword';
-import SignupPasswordRepeat from '../components/signup_components/SignupPasswordRepeat';
+import SignupUser from './signup_subpages/SignupUser';
+import SignupPassword from './signup_subpages/SignupPassword';
+import SignupPasswordRepeat from './signup_subpages/SignupPasswordRepeat';
 
 function SignupPage() {
     const dispatch = useDispatch();

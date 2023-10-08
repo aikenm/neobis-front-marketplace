@@ -10,8 +10,7 @@ const initialState = {
     fullDescription: '',
     photo: [],
     createProductStatus: 'idle',
-    likesCount: null, 
-    likedProducts: JSON.parse(localStorage.getItem('likedProducts')) || {}
+    like_count: null, 
 };
 
 export const createProduct = createAsyncThunk(
@@ -84,8 +83,13 @@ export const likeProduct = createAsyncThunk(
             if (error.response && error.response.data.message === "Product already liked") {
                 return rejectWithValue({ message: "Product already liked", originalError: error.response.data });
             }
-            return rejectWithValue(error.response.data);
+            if (error.response) {
+                return rejectWithValue(error.response.data);
+            } else {
+                return rejectWithValue({ message: error.message });
+            }
         }
+        
     }
   );
   
@@ -100,24 +104,6 @@ export const likeProduct = createAsyncThunk(
   
       try {
         const response = await axios.delete(`https://www.ishak-backender.org.kg/products/unlike/${productId}/`, { headers });
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response.data);
-      }
-    }
-  );
-
-  export const fetchLikesCount = createAsyncThunk(
-    'product/fetchLikesCount',
-    async (id, { rejectWithValue }) => {
-      const token = localStorage.getItem('access_token');
-      const headers = {
-        'accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      };
-  
-      try {
-        const response = await axios.get(`https://www.ishak-backender.org.kg/products/like-counts/${id}/`, { headers });
         return response.data;
       } catch (error) {
         return rejectWithValue(error.response.data);
@@ -142,8 +128,6 @@ export const likeProduct = createAsyncThunk(
       }
     }
   );
-  
-  
 
 const productSlice = createSlice({
   name: 'product',
@@ -165,11 +149,7 @@ const productSlice = createSlice({
     },
     resetCreateProductStatus: (state) => {
         state.createProductStatus = 'idle';
-    },
-    setLikedProductsFromLocalStorage: (state, action) => {
-        state.likedProducts = action.payload;
-    }
-    
+    }    
   },
   extraReducers: (builder) => {
     builder
@@ -198,6 +178,7 @@ const productSlice = createSlice({
         state.fullDescription = action.payload.description;
         state.photo = action.payload.photo;
         state.createProductStatus = 'fulfilled';
+        state.like_count = action.payload.like_count;
       })
       .addCase(fetchProductDetail.rejected, (state, action) => {
         state.createProductStatus = 'failed';
@@ -205,42 +186,21 @@ const productSlice = createSlice({
 
 
       .addCase(likeProduct.fulfilled, (state, action) => {
-    if (action.payload && typeof action.payload.likesCount !== 'undefined' && typeof action.payload.id !== 'undefined') {
-        state.likesCount = action.payload.likesCount;
-        state.likedProducts[action.payload.id] = true;
-        
-        localStorage.setItem('likedProducts', JSON.stringify(state.likedProducts));
-    } else {
-        console.error("Invalid action payload", action.payload);
-    }
-})
+        console.log('Product liked:', action.payload);
+      })
       .addCase(likeProduct.rejected, (state, action) => {
         console.error('Error liking product:', action.error);
       })
 
+
       .addCase(unlikeProduct.fulfilled, (state, action) => {
-        if (action.payload && "likesCount" in action.payload && "id" in action.payload) {
-          state.likesCount = action.payload.likesCount;
-          state.likedProducts[action.payload.id] = false;
-      
-          localStorage.setItem('likedProducts', JSON.stringify(state.likedProducts));
-        } else {
-          console.error("Invalid action payload");
-        }
+        console.log('Product unliked:', action.payload);
       })
       .addCase(unlikeProduct.rejected, (state, action) => {
         console.error('Error unliking product:', action.error);
       })
 
-
-      .addCase(fetchLikesCount.fulfilled, (state, action) => {
-        state.likesCount = action.payload;  
-        console.log('Likes count fetched:', action.payload);
-      })
-      .addCase(fetchLikesCount.rejected, (state, action) => {
-        console.error('Error fetching likes count:', action.error);
-      })
-
+      
       .addCase(deleteProduct.fulfilled, (state, action) => {
         console.log('Product deleted:', action.payload);
       })
@@ -250,6 +210,6 @@ const productSlice = createSlice({
   },
 });
 
-export const { setProductField, setProductPhoto, clearProduct, resetCreateProductStatus, setLikedProductsFromLocalStorage } = productSlice.actions;
+export const { setProductField, setProductPhoto, clearProduct, resetCreateProductStatus } = productSlice.actions;
 
 export default productSlice.reducer;

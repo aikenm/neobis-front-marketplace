@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { fetchAndSetUser, isTokenExpired } from './store/userSlice';
-import { setLikedProductsFromLocalStorage } from './store/productSlice';  // Import your action
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ProfilePage from './pages/ProfilePage';
@@ -20,13 +19,6 @@ const App = () => {
       dispatch(fetchAndSetUser())
       .finally(() => {
         setLoading(false);
-
-        // Load liked products from localStorage
-        const savedLikedProducts = localStorage.getItem('likedProducts');
-        if (savedLikedProducts) {
-          const parsedLikedProducts = JSON.parse(savedLikedProducts);
-          dispatch(setLikedProductsFromLocalStorage(parsedLikedProducts));
-        }
       });
     }
   }, [dispatch]);

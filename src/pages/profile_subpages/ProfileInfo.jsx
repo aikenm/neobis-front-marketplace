@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import arrow from '../../images/arrow.svg';
 import defaultAvatar from '../../images/avatar.svg';
 import { asyncUpdateUser } from '../../store/userSlice';
-import AddNumberModal from '../phone-number_components/AddNumberModal';
-import ConfirmCodeModal from '../phone-number_components/ConfirmCodeModal';
+import AddNumberModal from '../../modal_windows/profile_modals/AddNumberModal';
+import ConfirmCodeModal from '../../modal_windows/profile_modals/ConfirmCodeModal';
 
 function ProfileInfo() {
     const user = useSelector(state => state.user);

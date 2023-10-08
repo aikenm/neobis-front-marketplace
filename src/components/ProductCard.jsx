@@ -1,56 +1,68 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { likeProduct, unlikeProduct, deleteProduct } from '../../store/productSlice';  
-import likeIcon from '../../images/like-icon.svg';
-import notLikedIcon from '../../images/not-liked-icon.svg';
-import testImage from '../../images/product_image_samples/image 2test.png';
-import moreIcon from '../../images/drop-down.svg';
-import editIcon from '../../images/edit-icon.svg';
-import deleteIcon from '../../images/delete-small-icon.svg';
-import ProductDeleteModal from './ProductDeleteModal';
-import ProductEditModal from './ProductEditModal';
+import React, { useState, useEffect } from 'react';  
+import { useDispatch } from 'react-redux';
+import { likeProduct, unlikeProduct, deleteProduct } from '../store/productSlice';  
+import likeIcon from '../images/like-icon.svg';
+import notLikedIcon from '../images/not-liked-icon.svg';
+import testImage from '../images/product_image_samples/image 2test.png';
+import moreIcon from '../images/drop-down.svg';
+import editIcon from '../images/edit-icon.svg';
+import deleteIcon from '../images/delete-small-icon.svg';
+import ProductDeleteModal from '../modal_windows/product_modals/ProductDeleteModal';
+import ProductEditModal from '../modal_windows/product_modals/ProductEditModal';
 
 function ProductCard({ product, handleProductClick, showMoreButton, onUpdate }) {
   const dispatch = useDispatch();
 
-  const isLiked = useSelector((state) => state.product.likedProducts[product.id] || false);
+  const [isLiked, setIsLiked] = useState(() => {
+    const likedInStorage = localStorage.getItem(`product_liked_${product.id}`);
+    return likedInStorage === 'true'; 
+  });
+
+  useEffect(() => {
+    const likedInStorage = localStorage.getItem(`product_liked_${product.id}`);
+    setIsLiked(likedInStorage === 'true');
+  }, [product.id]);
+
   const [showExtraButtons, setShowExtraButtons] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [localLikesCount, setLocalLikesCount] = useState(product.likesCount || 0);
+  const [localLikesCount, setLocalLikesCount] = useState(product.like_count || 0);
 
   const toggleLike = async (event) => {
     event.stopPropagation();
 
     if (isLiked) {
         try {
-            await dispatch(unlikeProduct(product.id));
-            console.log('Successfully unliked product');
-            setIsLiked(false);
-            setLocalLikesCount(localLikesCount - 1);
+            const unlikedResponse = await dispatch(unlikeProduct(product.id));
+            
+            if (unlikedResponse && unlikedResponse.payload) {
+                console.log('Successfully unliked product');
+                setIsLiked(false);
+                localStorage.setItem(`product_liked_${product.id}`, 'false'); // Update local storage
+                setLocalLikesCount(localLikesCount - 1);
+            } else {
+                console.warn("Unexpected response structure or missing payload for unliking.");
+            }
         } catch (error) {
             console.error('Failed to unlike product', error);
         }
     } else {
         try {
-            const response = await dispatch(likeProduct(product.id));
+            const likedResponse = await dispatch(likeProduct(product.id));
             
-            if (response.payload && response.payload.message !== "Product already liked") {
+            if (likedResponse && likedResponse.payload) {
                 console.log('Successfully liked product');
                 setIsLiked(true);
+                localStorage.setItem(`product_liked_${product.id}`, 'true'); // Update local storage
                 setLocalLikesCount(localLikesCount + 1);
             } else {
-                console.warn(response.payload.message);
+                console.warn("Unexpected response structure or missing payload for liking.");
             }
         } catch (error) {
             console.error('Failed to like product', error);
         }
     }
-};
-
-
-
-
+  };
 
 
 

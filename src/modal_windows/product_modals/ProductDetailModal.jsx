@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchProductDetail, fetchLikesCount, clearProduct } from '../../store/productSlice';
+import { fetchProductDetail, clearProduct } from '../../store/productSlice';
 import testImage from '../../images/product_image_samples/image 2test.png';
 import likeIcon from '../../images/like-icon.svg';
 
-const ItemDetailModal = ({ onClose, productId }) => {
+const ProductDetailModal = ({ onClose, productId }) => {
     const dispatch = useDispatch();
     
     const [isLoading, setIsLoading] = useState(true); 
     const product = useSelector((state) => state.product);
-    const likesCount = product.likesCount; // From Redux state
   
     useEffect(() => {
       if (productId) {
         setIsLoading(true); 
-        dispatch(fetchProductDetail(productId));
-        dispatch(fetchLikesCount(productId)).finally(() => {
+        dispatch(fetchProductDetail(productId)).finally(() => {
           setIsLoading(false); 
         });
       }
@@ -38,7 +36,7 @@ const ItemDetailModal = ({ onClose, productId }) => {
             </div>
             <div className='product-container'>
                 <span className='product-price'>$ {parseInt(product.price, 10) || 'Default Price'}</span>
-                <span className='product-likes'><img src={likeIcon} alt='' className='product-like-icon' />Нравится: {likesCount || 0}</span>
+                <span className='product-likes'><img src={likeIcon} alt='' className='product-like-icon' />Нравится: {product.like_count || 0}</span>
                 <span className='product-name'>{product.name || 'Default Name'}</span>
                 <p className='product-description'>{product.shortDescription || 'Default Short Description'}</p>
                 <span className='product-description-title'>Детальное описание</span>
@@ -50,4 +48,4 @@ const ItemDetailModal = ({ onClose, productId }) => {
   );
 };
 
-export default ItemDetailModal;
+export default ProductDetailModal;

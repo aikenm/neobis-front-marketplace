@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetSteps } from '../store/signupSlice';
 import { logoutUser } from '../store/userSlice';  
-import ProfileInfo from '../components/profile_components/ProfileInfo';
-import Favorites from '../components/profile_components/Favorites';
-import UserItems from '../components/profile_components/UserItems';
-import ModalLogOutMessage from '../components/profile_components/ModalLogOutMessage';
+import ProfileInfo from './profile_subpages/ProfileInfo';
+import Favorites from './profile_subpages/Favorites';
+import UserItems from './profile_subpages/UserItems';
+import LogOutModal from '../modal_windows/profile_modals/LogOutModal';
 import favoritesIcon from '../images/favorites.svg';
 import myItemsIcon from '../images/my-items.svg';
 import logoutSmallIcon from '../images/logout-small.svg';
@@ -80,7 +80,7 @@ function ProfilePage() {
                 { renderRightComponent() }
             </div>
 
-            <ModalLogOutMessage 
+            <LogOutModal 
                 show={showLogoutModal}
                 onConfirm={handleLogoutConfirm}
                 onCancel={() => setShowLogoutModal(false)}

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import arrow from '../../images/arrow.svg';
-import ProductCard from '../product_components/ProductCard'; 
-import ItemDetailModal from '../main_components/ItemDetailModal';  
+import ProductCard from '../../components/ProductCard'; 
+import ProductetailModal from '../../modal_windows/product_modals/ProductDetailModal';  
 
 function UserItems() {
   const [products, setProducts] = useState([]);
@@ -56,7 +56,7 @@ function UserItems() {
                 />
             ))}
             </div>
-            {showDetailModal && <ItemDetailModal productId={selectedProductId} onClose={() => setShowDetailModal(false)} />} {/* New Line */}
+            {showDetailModal && <ProductetailModal productId={selectedProductId} onClose={() => setShowDetailModal(false)} />} {/* New Line */}
         </div>
     );
 }
