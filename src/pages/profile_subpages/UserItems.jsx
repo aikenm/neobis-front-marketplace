@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import arrow from '../../images/arrow.svg';
 import ProductCard from '../../components/ProductCard'; 
 import ProductetailModal from '../../modal_windows/product_modals/ProductDetailModal';  
 
-function UserItems() {
+function UserItems({ handleBack }) {
   const [products, setProducts] = useState([]);
   const [showDetailModal, setShowDetailModal] = useState(false); 
   const [selectedProductId, setSelectedProductId] = useState(null); 
@@ -39,10 +38,10 @@ function UserItems() {
     return (
         <div className='content'>
             <div className='content-header'>
-                <Link to="/main" className='profile-back-button'>
+                <button onClick={handleBack} className='profile-back-button'>
                     <img src={arrow} alt="back" className='arrow-icon'/>
                     <span className='arrow-text'>Назад</span>
-                </Link>
+                </button>
                 <span className='content-title'>Мои товары</span>
             </div>
             <div className='user-items-content-section'>

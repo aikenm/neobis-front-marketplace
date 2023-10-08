@@ -1,15 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import arrow from '../../images/arrow.svg';
 
-function Favorites() {
+function Favorites({ handleBack }) {
     return (
         <div className='content'>
             <div className='content-header'>
-                <Link to="/main" className='profile-back-button'>
+                <button onClick={handleBack} className='profile-back-button'>
                     <img src={arrow} alt="back" className='arrow-icon'/>
                     <span className='arrow-text'>Назад</span>
-                </Link>
+                </button>
                 <span className='content-title'>Понравившиеся</span>
             </div>
             <div className='content-section'>

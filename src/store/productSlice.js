@@ -10,7 +10,7 @@ const initialState = {
     fullDescription: '',
     photo: [],
     createProductStatus: 'idle',
-    like_count: null, 
+    like_count: '', 
 };
 
 export const createProduct = createAsyncThunk(
@@ -200,7 +200,7 @@ const productSlice = createSlice({
         console.error('Error unliking product:', action.error);
       })
 
-      
+
       .addCase(deleteProduct.fulfilled, (state, action) => {
         console.log('Product deleted:', action.payload);
       })
