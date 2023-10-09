@@ -82,6 +82,7 @@ function MainPage() {
             key={index} 
             product={product} 
             handleProductClick={handleProductClick}
+            showLikeCount={true} 
           />
         ))}
       </div>

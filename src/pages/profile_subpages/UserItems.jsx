@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import arrow from '../../images/arrow.svg';
 import ProductCard from '../../components/ProductCard'; 
-import ProductetailModal from '../../modal_windows/product_modals/ProductDetailModal';  
+import ProductDetailModal from '../../modal_windows/product_modals/ProductDetailModal';  
 
 function UserItems({ handleBack }) {
   const [products, setProducts] = useState([]);
@@ -60,10 +60,11 @@ function UserItems({ handleBack }) {
                     onProductDeleted={handleProductDeleted}
                     activeProduct={activeProductId}  
                     setActiveProduct={setActiveProductId} 
+                    showLikeCount={true} 
                 />
             ))}
             </div>
-            {showDetailModal && <ProductetailModal productId={selectedProductId} onClose={() => setShowDetailModal(false)} />} {/* New Line */}
+            {showDetailModal && <ProductDetailModal productId={selectedProductId} onClose={() => setShowDetailModal(false)} />} {/* New Line */}
         </div>
     );
 }

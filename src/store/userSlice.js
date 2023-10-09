@@ -41,6 +41,8 @@ const userSlice = createSlice({
                     localStorage.removeItem(key);
                 }
             }
+
+            localStorage.removeItem('liked_products');
             
             state.loginStatus = false;
             Object.assign(state, initialState);

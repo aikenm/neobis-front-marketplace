@@ -9,7 +9,7 @@ import deleteIcon from '../images/delete-small-icon.svg';
 import ProductDeleteModal from '../modal_windows/product_modals/ProductDeleteModal';
 import ProductEditModal from '../modal_windows/product_modals/ProductEditModal';
 
-function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, onProductDeleted, activeProduct, setActiveProduct }) {
+function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, onProductDeleted, activeProduct, setActiveProduct, showLikeCount = false, onUnlike }) {
   const dispatch = useDispatch();
 
   const [isLiked, setIsLiked] = useState(() => {
@@ -25,6 +25,8 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
   const toggleLike = async (event) => {
     event.stopPropagation();
 
+    const likedProducts = JSON.parse(localStorage.getItem('liked_products') || '[]');
+
     if (isLiked) {
         try {
             const unlikedResponse = await dispatch(unlikeProduct(product.id));
@@ -34,12 +36,17 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
                 setIsLiked(false);
                 localStorage.setItem(`product_liked_${product.id}`, 'false'); 
                 setLocalLikesCount(localLikesCount - 1);
+
+                const updatedProducts = likedProducts.filter(p => p.id !== product.id);
+                localStorage.setItem('liked_products', JSON.stringify(updatedProducts));
+
             } else {
                 console.warn("Unexpected response structure or missing payload for unliking.");
             }
         } catch (error) {
             console.error('Failed to unlike product', error);
         }
+        if (onUnlike) onUnlike(product.id);
     } else {
         try {
             const likedResponse = await dispatch(likeProduct(product.id));
@@ -49,6 +56,10 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
                 setIsLiked(true);
                 localStorage.setItem(`product_liked_${product.id}`, 'true');
                 setLocalLikesCount(localLikesCount + 1);
+
+                likedProducts.push(product);
+                localStorage.setItem('liked_products', JSON.stringify(likedProducts));
+
             } else {
                 console.warn("Unexpected response structure or missing payload for liking.");
             }
@@ -56,7 +67,8 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
             console.error('Failed to like product', error);
         }
     }
-  };
+};
+
 
   const handleMoreClick = (event) => {
     event.stopPropagation();
@@ -131,7 +143,7 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
         <button className='product-card-like-button' onClick={toggleLike}>
           <img src={isLiked ? likeIcon : notLikedIcon} alt='' className='product-card-like-icon' />
         </button>
-        <span className='product-card-likes'>{localLikesCount || 0}</span>
+        { showLikeCount && <span className='product-card-likes'>{localLikesCount || 0}</span> }
         {showMoreButton && (
           <div 
               className='product-card-more-wrapper' 
