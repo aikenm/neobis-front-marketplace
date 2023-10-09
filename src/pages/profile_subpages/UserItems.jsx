@@ -8,6 +8,7 @@ function UserItems({ handleBack }) {
   const [products, setProducts] = useState([]);
   const [showDetailModal, setShowDetailModal] = useState(false); 
   const [selectedProductId, setSelectedProductId] = useState(null); 
+  const [activeProductId, setActiveProductId] = useState(null);
   
   const fetchProducts = async () => {
     const token = localStorage.getItem('access_token'); 
@@ -26,10 +27,6 @@ function UserItems({ handleBack }) {
     }
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
   const handleProductClick = (id) => {
     setSelectedProductId(id);  
     setShowDetailModal(true);  
@@ -38,6 +35,24 @@ function UserItems({ handleBack }) {
   const handleProductDeleted = (deletedProductId) => {
     setProducts(prevProducts => prevProducts.filter(product => product.id !== deletedProductId));
   }
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    const handleGlobalClick = (e) => {
+      if (!e.target.closest('.product-card-more-wrapper')) {
+        setActiveProductId(null);
+      }
+    };
+
+    document.addEventListener('click', handleGlobalClick);
+
+    return () => {
+      document.removeEventListener('click', handleGlobalClick);
+    }
+  }, []);
 
     return (
         <div className='content'>
@@ -57,6 +72,8 @@ function UserItems({ handleBack }) {
                     showMoreButton={true}
                     onUpdate={fetchProducts} 
                     onProductDeleted={handleProductDeleted}
+                    activeProduct={activeProductId}  
+                    setActiveProduct={setActiveProductId} 
                 />
             ))}
             </div>

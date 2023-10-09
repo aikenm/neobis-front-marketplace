@@ -9,7 +9,7 @@ import deleteIcon from '../images/delete-small-icon.svg';
 import ProductDeleteModal from '../modal_windows/product_modals/ProductDeleteModal';
 import ProductEditModal from '../modal_windows/product_modals/ProductEditModal';
 
-function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, onProductDeleted }) {
+function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, onProductDeleted, activeProduct, setActiveProduct }) {
   const dispatch = useDispatch();
 
   const [isLiked, setIsLiked] = useState(() => {
@@ -22,7 +22,7 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
     setIsLiked(likedInStorage === 'true');
   }, [product.id]);
 
-  const [showExtraButtons, setShowExtraButtons] = useState(false);
+  const showExtraButtons = product.id === activeProduct;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [localLikesCount, setLocalLikesCount] = useState(product.like_count || 0);
@@ -64,8 +64,12 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
   };
 
   const handleMoreClick = (event) => {
-    event.stopPropagation();  
-    setShowExtraButtons(!showExtraButtons);
+    event.stopPropagation();
+    if (product.id === activeProduct) {
+      setActiveProduct(null);
+    } else {
+      setActiveProduct(product.id);
+    }
   };
 
   const handleEditClick = (event) => {
@@ -80,7 +84,7 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
 
   const handleDeleteConfirm = (event) => {
     if (event) event.stopPropagation();
-    setShowExtraButtons(false);
+    setActiveProduct(null);
     setShowDeleteModal(false); 
   
     dispatch(deleteProduct(product.id))
@@ -100,19 +104,13 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
   setShowDeleteModal(false); 
   };
 
-  const handleBlur = () => {
-    setTimeout(() => {
-      setShowExtraButtons(false);
-    }, 200);
-  };
-
   const handleUpdate = () => {
-    setShowExtraButtons(false); 
+    setActiveProduct(null); 
     if (onUpdate) {
         onUpdate();
     }
     setShowEditModal(false);
-};
+  };
   
 
   return (
@@ -126,7 +124,7 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
         </button>
         <span className='product-card-likes'>{localLikesCount || 0}</span>
         {showMoreButton && (
-          <div onBlur={handleBlur} className='product-card-more-wrapper'>
+          <div className='product-card-more-wrapper'>
             <button className='product-card-more-button' onClick={handleMoreClick}>
                 <img src={moreIcon} alt='' className='product-card-more-button' />
             </button>
