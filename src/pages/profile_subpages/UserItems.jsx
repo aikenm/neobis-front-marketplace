@@ -49,9 +49,9 @@ function UserItems({ handleBack }) {
                 <span className='content-title'>Мои товары</span>
             </div>
             <div className='user-items-content-section'>
-            {products.map((product, index) => (
+            {products.map((product) => (
                 <ProductCard 
-                    key={index} 
+                    key={product.id} 
                     product={product} 
                     handleProductClick={() => handleProductClick(product.id)} 
                     showMoreButton={true}

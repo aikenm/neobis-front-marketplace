@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { likeProduct, unlikeProduct, deleteProduct } from '../store/productSlice';  
 import likeIcon from '../images/like-icon.svg';
 import notLikedIcon from '../images/not-liked-icon.svg';
-import testImage from '../images/product_image_samples/image 2test.png';
 import moreIcon from '../images/drop-down.svg';
 import editIcon from '../images/edit-icon.svg';
 import deleteIcon from '../images/delete-small-icon.svg';
@@ -81,13 +80,14 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
 
   const handleDeleteConfirm = (event) => {
     if (event) event.stopPropagation();
+    setShowExtraButtons(false);
     setShowDeleteModal(false); 
   
     dispatch(deleteProduct(product.id))
       .then((response) => {
         console.log('Product successfully deleted', response);
         if (onProductDeleted) {
-          onProductDeleted(product.id); // Notify parent component of product deletion
+          onProductDeleted(product.id); 
         }
       })
       .catch((error) => {
@@ -107,16 +107,17 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
   };
 
   const handleUpdate = () => {
+    setShowExtraButtons(false); 
     if (onUpdate) {
-      onUpdate();
+        onUpdate();
     }
     setShowEditModal(false);
-  };
+};
   
 
   return (
     <div onClick={() => handleProductClick(product.id)} className='product-card'>
-      <img src={product.photo || testImage} alt='' className='product-card-image' />
+      <img src={product.photo} alt='' className='product-card-image' />
       <span className='product-card-name'>{product.name || "Default Name"}</span>
       <span className='product-card-price'>$ {parseInt(product.price, 10) || "Default Price"}</span>
       <div className='product-card-like-wrapper'>

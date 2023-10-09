@@ -7,7 +7,7 @@ import ProductDetailModal from '../modal_windows/product_modals/ProductDetailMod
 import defaultAvatar from '../images/avatar.svg';
 import miniLogo from '../images/mini-logo.svg';
 import ProductCard from '../components/ProductCard';
-import { resetCreateProductStatus } from '../store/productSlice';
+import { resetCreateProductStatus, clearProduct } from '../store/productSlice';
 
 function MainPage() {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -17,7 +17,7 @@ function MainPage() {
   const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.user);
   const avatar = useSelector((state) => state.user.avatar);
-  const createProductStatus = useSelector((state) => state.product.createProductStatus); // Listen for product creation status
+  const createProductStatus = useSelector((state) => state.product.createProductStatus); 
 
   const dispatch = useDispatch();
 
@@ -36,10 +36,10 @@ function MainPage() {
   };
 
   useEffect(() => {
+    dispatch(clearProduct());
     fetchProducts();
   }, [dispatch]);
 
-  // Add this useEffect to re-fetch products when a new one is added successfully
   useEffect(() => {
     if (createProductStatus === 'fulfilled') {
       fetchProducts();
