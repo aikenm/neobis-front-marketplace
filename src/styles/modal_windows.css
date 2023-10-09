@@ -102,7 +102,7 @@
 }
 
 .modal-number-content {
-    justify-content: center;
+    margin: 0 auto;
     width: 335px;
 }
 
@@ -129,6 +129,7 @@
   font-size: 28px;
   font-family: 'Montserrat', sans-serif;
   background: none;
+  background-color: #5458EA;
   text-align: center;
   border: none;
   margin-bottom: 30px;
