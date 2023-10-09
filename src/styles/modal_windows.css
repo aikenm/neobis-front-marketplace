@@ -102,6 +102,7 @@
 }
 
 .modal-number-content {
+    justify-content: center;
     width: 335px;
 }
 
