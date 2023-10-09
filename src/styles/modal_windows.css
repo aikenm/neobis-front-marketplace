@@ -99,10 +99,13 @@
     width: 565px;
     box-sizing: border-box;
     background-color: #fff;
+    position: relative;
 }
 
 .modal-number-content {
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 335px;
 }
 
@@ -129,7 +132,6 @@
   font-size: 28px;
   font-family: 'Montserrat', sans-serif;
   background: none;
-  background-color: #5458EA;
   text-align: center;
   border: none;
   margin-bottom: 30px;
@@ -168,8 +170,8 @@
 
 .close-button {
   position: absolute;
-  top: 23%;
-  margin-left: 230px;
+  top: 4%;
+  margin-left: 405px;
   font-size: 23px;
   background: none;
   border: none;
@@ -254,12 +256,12 @@
   flex-direction: column;
   align-items: center;
   background: white;
-  padding: 55px 10px;
+  padding: 50px 10px;
   border-radius: 40px;
   width: 570px;
-  height: 480px;
   box-sizing: border-box;
   background-color: #fff;
+  position: relative;
 }
 
 .file-image-section {
@@ -317,16 +319,19 @@
 
 .product-input {
   width: 97%;
-  height: 40px;
+  height: 20px;
   border-radius: 12px;
   margin-top: 7px;
   border: none;
-  padding-left: 10px;
+  padding: 10px 10px;
   background-color: #F7F6F9;
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
   outline: none;
   transition: background-color 0.2s ease;
+  resize: none; 
+  overflow-y: auto;
+  align-items: center; 
 }
 
 .add-product-input::placeholder {
@@ -367,7 +372,7 @@
 
 .product-close-button {
   position: absolute;
-  top: 25%;
+  top: 4%;
   margin-left: 90px;
   font-size: 23px;
   background: none;
@@ -392,9 +397,9 @@
   padding: 50px 12px;
   border-radius: 40px;
   width: 570px;
-  height: 677px;
   box-sizing: border-box;
   background-color: #fff;
+  position: relative;
 }
 
 .carousel-container {
@@ -405,6 +410,8 @@
 .product-image {
   display: flex;
   width: 100%;
+  height: 350px;
+  object-fit: cover;
   border-radius: 25px;
   box-shadow: 0px 11px 15px -8px rgba(0,0,0,0.77);
   -webkit-box-shadow: 0px 11px 15px -8px rgba(0,0,0,0.77);
@@ -443,6 +450,7 @@
 }
 
 .product-description {
+  word-wrap: break-word;
   font-size: 16px;
   margin-top: 10px;
   color: #C0C0C0;
@@ -456,8 +464,8 @@
 
 .product-detail-close-button {
   position: absolute;
-  top: 12.5%;
-  margin-left: 500px;
+  top: 2%;
+  margin-left: 505px;
   font-size: 23px;
   background: none;
   border: none;
@@ -474,13 +482,13 @@
 
 .modal-product-edit-content {
   display: flex;
+  position: relative;
   flex-direction: column;
   text-align: start;
   background: white;
   padding: 50px 12px;
   border-radius: 40px;
   width: 570px;
-  height: 720px;
   box-sizing: border-box;
   background-color: #fff;
 }
@@ -488,13 +496,19 @@
 .product-edit-image {
   display: flex;
   width: 100%;
+  height: 350px;
+  object-fit: cover;
   border-radius: 25px;
   margin-bottom: 10px;
 }
 
+.full-description-input {
+  height: 70px;
+}
+
 .product-edit-close-button {
   position: absolute;
-  top: 10%;
+  top: 2%;
   margin-left: 505px;
   font-size: 23px;
   background: none;
@@ -510,5 +524,5 @@
 
 .edit-button {
   margin: 0 auto;
-  margin-top: 25px;
+  margin-top: 20px;
 }

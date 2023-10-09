@@ -35,12 +35,12 @@ const ProductDetailModal = ({ onClose, productId }) => {
                 <img src={product.photo || testImage} alt='' className='product-image' />
             </div>
             <div className='product-container'>
-                <span className='product-price'>$ {parseInt(product.price, 10) || 'Default Price'}</span>
+                <span className='product-price'>$ {parseInt(product.price, 10) || '0'}</span>
                 <span className='product-likes'><img src={likeIcon} alt='' className='product-like-icon' />Нравится: {product.like_count || 0}</span>
-                <span className='product-name'>{product.name || 'Default Name'}</span>
-                <p className='product-description'>{product.shortDescription || 'Default Short Description'}</p>
+                <span className='product-name'>{product.name || 'Название отсутствует'}</span>
+                <p className='product-description'>{product.shortDescription || 'Краткое описание отсутствует'}</p>
                 <span className='product-description-title'>Детальное описание</span>
-                <p className='product-description'>{product.fullDescription || 'Default Full Description'}</p>
+                <p className='product-description'>{product.fullDescription || 'Детальное описание отсутствует'}</p>
                 <button onClick={handleClose} className='product-detail-close-button'>✖</button>
             </div>
         </div>

@@ -98,11 +98,12 @@ const ProductEditModal = ({ onClose, productId, onUpdate }) => {
               className='product-input'
               placeholder='Краткое описание'
             />
-            <input
+            <textarea
               {...register('fullDescription', { required: true })}
               defaultValue={product.fullDescription}
-              className='product-input'
+              className='product-input full-description-input'
               placeholder='Полное описание'
+              rows="1"
             />
             <button type="submit" disabled={!isValid} className='product-button edit-button'>Сохранить</button>
             <button onClick={handleClose} className='product-edit-close-button'>✖</button>

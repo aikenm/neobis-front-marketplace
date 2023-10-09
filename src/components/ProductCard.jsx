@@ -17,11 +17,6 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
     return likedInStorage === 'true'; 
   });
 
-  useEffect(() => {
-    const likedInStorage = localStorage.getItem(`product_liked_${product.id}`);
-    setIsLiked(likedInStorage === 'true');
-  }, [product.id]);
-
   const showExtraButtons = product.id === activeProduct;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -68,7 +63,10 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
     if (product.id === activeProduct) {
       setActiveProduct(null);
     } else {
-      setActiveProduct(product.id);
+      setActiveProduct(null);
+      setTimeout(() => {
+        setActiveProduct(product.id);
+      }, 0);
     }
   };
 
@@ -104,27 +102,42 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
   setShowDeleteModal(false); 
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = (updatedProduct) => {
     setActiveProduct(null); 
     if (onUpdate) {
-        onUpdate();
+      onUpdate(updatedProduct);
     }
     setShowEditModal(false);
   };
-  
 
+  const handleBlur = (event) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+        setActiveProduct(null);
+    }
+};
+
+
+  useEffect(() => {
+    const likedInStorage = localStorage.getItem(`product_liked_${product.id}`);
+    setIsLiked(likedInStorage === 'true');
+  }, [product.id]);
+  
   return (
     <div onClick={() => handleProductClick(product.id)} className='product-card'>
       <img src={product.photo} alt='' className='product-card-image' />
-      <span className='product-card-name'>{product.name || "Default Name"}</span>
-      <span className='product-card-price'>$ {parseInt(product.price, 10) || "Default Price"}</span>
+      <span className='product-card-name'>{product.name || "Название"}</span>
+      <span className='product-card-price'>$ {parseInt(product.price, 10) || "0"}</span>
       <div className='product-card-like-wrapper'>
         <button className='product-card-like-button' onClick={toggleLike}>
           <img src={isLiked ? likeIcon : notLikedIcon} alt='' className='product-card-like-icon' />
         </button>
         <span className='product-card-likes'>{localLikesCount || 0}</span>
         {showMoreButton && (
-          <div className='product-card-more-wrapper'>
+          <div 
+              className='product-card-more-wrapper' 
+              tabIndex="0"
+              onBlur={handleBlur}
+          >
             <button className='product-card-more-button' onClick={handleMoreClick}>
                 <img src={moreIcon} alt='' className='product-card-more-button' />
             </button>
@@ -146,8 +159,7 @@ function ProductCard({ product, handleProductClick, showMoreButton, onUpdate, on
         onConfirm={handleDeleteConfirm} 
         onCancel={handleDeleteCancel} 
       />
-      {showEditModal && <ProductEditModal productId={product.id} onClose={handleUpdate} />}
-
+      {showEditModal && <ProductEditModal productId={product.id} onClose={(updatedProduct) => handleUpdate(updatedProduct)} />}
     </div>
   );
 }

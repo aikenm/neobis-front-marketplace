@@ -103,11 +103,11 @@ const ProductAddModal = ({ onClose }) => {
                         placeholder='Краткое описание'
                     />
                     
-                    <input
+                    <textarea
                         {...register('fullDescription', { required: true })}
                         onChange={(e) => dispatch(setProductField({ field: 'fullDescription', value: e.target.value }))}
                         value={product.fullDescription}
-                        className='product-input'
+                        className='product-input full-description-input'
                         placeholder='Полное описание'
                     />
                     <button type="submit" disabled={!isFormValid} className='product-button'>Добавить</button>

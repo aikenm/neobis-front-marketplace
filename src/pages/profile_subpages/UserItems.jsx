@@ -40,20 +40,6 @@ function UserItems({ handleBack }) {
     fetchProducts();
   }, []);
 
-  useEffect(() => {
-    const handleGlobalClick = (e) => {
-      if (!e.target.closest('.product-card-more-wrapper')) {
-        setActiveProductId(null);
-      }
-    };
-
-    document.addEventListener('click', handleGlobalClick);
-
-    return () => {
-      document.removeEventListener('click', handleGlobalClick);
-    }
-  }, []);
-
     return (
         <div className='content'>
             <div className='content-header'>
@@ -70,7 +56,7 @@ function UserItems({ handleBack }) {
                     product={product} 
                     handleProductClick={() => handleProductClick(product.id)} 
                     showMoreButton={true}
-                    onUpdate={fetchProducts} 
+                    onUpdate={fetchProducts}
                     onProductDeleted={handleProductDeleted}
                     activeProduct={activeProductId}  
                     setActiveProduct={setActiveProductId} 

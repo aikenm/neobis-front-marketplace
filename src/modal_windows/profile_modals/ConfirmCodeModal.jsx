@@ -72,7 +72,7 @@ function ConfirmCodeModal({ onClose, onConfirm, enteredNumber }) {
                         {!canResend && <div className="timer">{formatTime(timer)}</div>}
                     </div>
                 </button>
-                <button onClick={onClose} className='confirm-close-button'>✖</button>
+                <button onClick={onClose} className='close-button'>✖</button>
             </div>
         </div>
     </div>
