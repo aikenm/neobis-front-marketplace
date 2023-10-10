@@ -23,7 +23,6 @@ function SignupUsername({
             ...formData,
             [name]: value
         });
-        handleUserExists(true);
     };
 
     useEffect(() => {
@@ -63,7 +62,7 @@ function SignupUsername({
                 <label className="floating-label">Почта</label>
                 {isSubmitted && errors.email && <p>{errors.email.message}</p>}
             </div>
-            {showTooltip && <div className="signup-tooltip show"><img src={warning} alt='Warning sign' className='warning-icon'/>Данный пользователь уже зарегистрирован</div>}
+            {showTooltip && <div className="user-exist-tooltip show"><img src={warning} alt='Warning sign' className='warning-icon'/>Данный пользователь уже зарегистрирован</div>}
             <button 
                 type="submit" 
                 className='form-button'

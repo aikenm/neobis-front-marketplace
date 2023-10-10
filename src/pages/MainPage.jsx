@@ -6,6 +6,7 @@ import ProductAddModal from '../modal_windows/product_modals/ProductAddModal';
 import ProductDetailModal from '../modal_windows/product_modals/ProductDetailModal';
 import defaultAvatar from '../images/avatar.svg';
 import miniLogo from '../images/mini-logo.svg';
+import warning from '../images/warning.svg';
 import ProductCard from '../components/ProductCard';
 import { resetCreateProductStatus, clearProduct } from '../store/productSlice';
 
@@ -13,6 +14,8 @@ function MainPage() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+
 
   const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.user);
@@ -35,6 +38,21 @@ function MainPage() {
     }
   };
 
+  const handleProductCreationSuccess = () => {
+    setShowTooltip(true);
+  
+    setTimeout(() => {
+      const tooltipElem = document.querySelector('.product-created-tooltip');
+      if (tooltipElem) {
+        tooltipElem.classList.remove('show');
+        setTimeout(() => {
+          setShowTooltip(false);
+        }, 300);
+      }
+    }, 4000);
+  };
+  
+
   useEffect(() => {
     dispatch(clearProduct());
     fetchProducts();
@@ -43,6 +61,7 @@ function MainPage() {
   useEffect(() => {
     if (createProductStatus === 'fulfilled') {
       fetchProducts();
+      handleProductCreationSuccess();
     }
   }, [createProductStatus, dispatch]);
 
@@ -87,6 +106,7 @@ function MainPage() {
         ))}
       </div>
 
+      {showTooltip && <div className="product-created-tooltip show"><img src={warning} alt='Warning sign' className='warning-icon'/>Товар добавлен</div>}
       {showAddModal && <ProductAddModal onClose={() => setShowAddModal(false)} />}
       {showDetailModal && <ProductDetailModal productId={selectedProductId} onClose={() => setShowDetailModal(false)} />}
     </div>

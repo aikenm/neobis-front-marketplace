@@ -10,6 +10,7 @@ const initialState = {
     fullDescription: '',
     photo: [],
     createProductStatus: 'idle',
+    fetchProductDetailStatus: 'idle',
     like_count: '', 
 };
 
@@ -168,7 +169,7 @@ const productSlice = createSlice({
 
 
       .addCase(fetchProductDetail.pending, (state) => {
-        state.createProductStatus = 'loading';
+        state.fetchProductDetailStatus = 'loading';
       })
       .addCase(fetchProductDetail.fulfilled, (state, action) => {
         state.id = action.payload.id;
@@ -177,11 +178,11 @@ const productSlice = createSlice({
         state.shortDescription = action.payload.short_description;
         state.fullDescription = action.payload.description;
         state.photo = action.payload.photo;
-        state.createProductStatus = 'fulfilled';
+        state.fetchProductDetailStatus = 'fulfilled';
         state.like_count = action.payload.like_count;
       })
       .addCase(fetchProductDetail.rejected, (state, action) => {
-        state.createProductStatus = 'failed';
+        state.fetchProductDetailStatus = 'failed';
       })
 
 

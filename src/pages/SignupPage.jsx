@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setEmail, setUsername, setPassword, nextStep, prevStep, registerUser, resetUserExists } from '../store/signupSlice';
+import { setEmail, setUsername, setPassword, nextStep, prevStep, registerUser, resetUserExists, resetSteps } from '../store/signupSlice';
 import logo from '../images/logo.svg';
 import SignupUser from './signup_subpages/SignupUser';
 import SignupPassword from './signup_subpages/SignupPassword';
@@ -10,7 +10,7 @@ import SignupPasswordRepeat from './signup_subpages/SignupPasswordRepeat';
 
 function SignupPage() {
     const dispatch = useDispatch();
-    const [passwordVisible, setPasswordVisible] = useState(true);
+    const [passwordVisible, setPasswordVisible] = useState(false);
     const { register, handleSubmit, watch, setError, setValue, formState: { errors, isSubmitted } } = useForm();
     const { password, step } = useSelector(state => state.signup);
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&=-])[A-Za-z\d@$!%*?&=-]{8,15}$/;
@@ -25,17 +25,34 @@ function SignupPage() {
     const navigate = useNavigate();
     const userExists = useSelector(state => state.signup.userExists);
 
-    const handleUserExists = (reset = false) => {
-        if (reset) {
-            setShowTooltip(false);
-        } else {
-            setShowTooltip(true);
-            setTimeout(() => {
-                setShowTooltip(false);
-            }, 5000);
-        }
+    const handleUserExists = () => {
+        setShowTooltip(true);
+        
+        setTimeout(() => {
+            const tooltipElem = document.querySelector('.user-exist-tooltip');
+            if (tooltipElem) {
+                tooltipElem.classList.remove('show');
+                setTimeout(() => {
+                    setShowTooltip(false);
+                }, 300);
+            }
+        }, 4000);
     };
 
+    const handleRegistrationSuccess = () => {
+        setShowTooltip(true);
+        
+        setTimeout(() => {
+            const tooltipElem = document.querySelector('.registration-success-tooltip');
+            if (tooltipElem) {
+                tooltipElem.classList.remove('show');
+                setTimeout(() => {
+                    setShowTooltip(false);
+                }, 300);
+            }
+        }, 4000);
+    };
+    
     const handleNextStep = async (data) => {
         if (step === 1) {
             if (!errors.email && !errors.login) {
@@ -71,8 +88,12 @@ function SignupPage() {
                     email: watchedEmail,
                     password: watchedPassword,
                     password_confirm: watchedPasswordRepeat
-                }));
-                navigate('/');          
+                })).then(() => {
+                    handleRegistrationSuccess();
+                    dispatch(resetSteps());
+                    navigate('/', { state: { signedUp: true } });
+                });
+                         
             }
         }
     };

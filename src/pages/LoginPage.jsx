@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../store/userSlice';
 import logo from '../images/logo.svg';
@@ -12,12 +12,15 @@ function LoginPage() {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [buttonText, setButtonText] = useState("Войти");
     const [showTooltip, setShowTooltip] = useState(false);
     const [loginFailed, setLoginFailed] = useState(false);
     const [disableLoginButton, setDisableLoginButton] = useState(false);
+
+    const [showSignupSuccess, setShowSignupSuccess] = useState(false);
 
     const [inputValues, setInputValues] = useState({
         username: '',
@@ -47,7 +50,7 @@ function LoginPage() {
                     setShowTooltip(false); 
                 }, 300);  
             }
-        }, 5000);   
+        }, 4000);   
     
         setDisableLoginButton(true);  
         setButtonText("Повторите через 10");
@@ -89,7 +92,15 @@ function LoginPage() {
             }
         }
     }, []);
-    
+
+    useEffect(() => {
+        if (location.state && location.state.signedUp) {
+          setShowSignupSuccess(true);
+          setTimeout(() => {
+            setShowSignupSuccess(false);
+          }, 4000);
+        }
+      }, [location]);
 
     return (
         <div className='main'>
@@ -134,7 +145,18 @@ function LoginPage() {
                             className="toggle-password-visibility"
                         />
                     </div>
-                    {showTooltip && <div className="tooltip show"><img src={warning} alt='Warning sign' className='warning-icon'/>Неверный логин или пароль</div>}
+                    {showTooltip && 
+                        <div className="tooltip show">
+                            <img src={warning} alt='Warning sign' className='warning-icon'/>
+                            Неверный логин или пароль
+                        </div>
+                    }
+                    {showSignupSuccess && 
+                        <div className="registration-success-tooltip show">
+                            <img src={warning} alt='Warning sign' className='warning-icon'/> 
+                            Вы успешно зарегистрировались!
+                        </div>
+                    }
                     <button 
                         type="submit" 
                         className='login-form-button form-button' 
