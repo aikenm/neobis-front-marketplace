@@ -25,19 +25,23 @@ function SignupPage() {
     const navigate = useNavigate();
     const userExists = useSelector(state => state.signup.userExists);
 
-    const handleUserExists = () => {
-        setShowTooltip(true);
-        
-        setTimeout(() => {
-            const tooltipElem = document.querySelector('.user-exist-tooltip');
-            if (tooltipElem) {
-                tooltipElem.classList.remove('show');
-                setTimeout(() => {
-                    setShowTooltip(false);
-                }, 300);
-            }
-        }, 4000);
+    const handleUserExists = (reset = false) => {
+        if (reset) {
+            setShowTooltip(false);
+        } else {
+            setShowTooltip(true);
+            setTimeout(() => {
+                const tooltipElem = document.querySelector('.user-exist-tooltip');
+                if (tooltipElem) {
+                    tooltipElem.classList.remove('show');
+                    setTimeout(() => {
+                        setShowTooltip(false);
+                    }, 300);
+                }
+            }, 4000);
+        }
     };
+    
 
     const handleRegistrationSuccess = () => {
         setShowTooltip(true);

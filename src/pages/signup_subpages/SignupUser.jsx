@@ -8,7 +8,6 @@ function SignupUsername({
     errors, 
     isSubmitted, 
     showTooltip,
-    handleUserExists
 }) {
 
     const [isFormComplete, setFormComplete] = useState(false);
@@ -17,17 +16,31 @@ function SignupUsername({
         email: ''
     });
 
+    const [inputError, setInputError] = useState(false); 
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value
         });
+        setInputError(false); 
     };
 
     useEffect(() => {
         setFormComplete(formData.username !== '' && formData.email !== '');
     }, [formData]);
+
+    useEffect(() => {
+        if (showTooltip) {
+            setInputError(true); 
+            setTimeout(() => {
+                if (!inputError) {  
+                    setInputError(false);  
+                }
+            }, 4000);
+        }
+    }, [showTooltip]);
 
     return (
         <>
@@ -40,7 +53,7 @@ function SignupUsername({
                     {...register('username', { required: true })}
                     type="text" 
                     placeholder=" "
-                    className={`input-field ${showTooltip ? 'input-error' : ''}`}
+                    className={`input-field ${inputError ? 'input-error' : ''}`}
                     onChange={handleInputChange}
                 />
                 <label className="floating-label">Имя пользователя</label>
@@ -56,7 +69,7 @@ function SignupUsername({
                     })}
                     type="email" 
                     placeholder=" "
-                    className={`input-field ${showTooltip ? 'input-error' : ''}`}
+                    className={`input-field ${inputError ? 'input-error' : ''}`}
                     onChange={handleInputChange}
                 />
                 <label className="floating-label">Почта</label>
